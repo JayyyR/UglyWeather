@@ -7,28 +7,30 @@ import android.view.View
 import android.view.ViewGroup
 import com.joeracosta.library.activity.FragmentMapFragment
 import com.joeracosta.uglyweather.R
-import com.joeracosta.uglyweather.databinding.MapLayoutBinding
+import com.joeracosta.uglyweather.databinding.MapFragmentBinding
 
 /**
  * Created by Joe on 12/23/2017.
  */
 
-class FragmentMap : FragmentMapFragment() {
+class MapFragment : FragmentMapFragment() {
 
-    lateinit var binding : MapLayoutBinding
+    lateinit var binding : MapFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        binding = MapLayoutBinding.inflate(inflater)
+        binding = MapFragmentBinding.inflate(inflater)
         binding.view = this
         return binding.root
     }
 
-    fun getNavigationListener() : BottomNavigationView.OnNavigationItemSelectedListener {
-        return bottomNavListener
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (!hasFragments()) {
+            showFragmentInMap(NowFragment(), R.id.content_view, R.id.menu_now.toString())
+        }
     }
 
-    private val bottomNavListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+    val navigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.menu_now -> showFragmentInMap(NowFragment(), R.id.content_view, R.id.menu_now.toString())
             R.id.menu_later -> System.out.print("")

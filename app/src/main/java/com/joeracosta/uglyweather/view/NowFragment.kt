@@ -13,7 +13,7 @@ import com.joeracosta.uglyweather.R
 class NowFragment : SimpleFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_now, container, false)
+        return inflater.inflate(R.layout.now_fragment, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

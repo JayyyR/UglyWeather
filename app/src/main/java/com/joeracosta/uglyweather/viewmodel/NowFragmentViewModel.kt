@@ -2,9 +2,11 @@ package com.joeracosta.uglyweather.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.databinding.Bindable
+import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
 import com.joeracosta.uglyweather.model.NowWeather
 import com.joeracosta.uglyweather.network.weatherAPI
+import com.joeracosta.uglyweather.util.grabString
 import com.joeracosta.uglyweather.util.offMain
 
 /**
@@ -25,7 +27,12 @@ class NowFragmentViewModel : SmartViewModel() {
 
     @Bindable
     fun getTemperature() : String {
-        return nowWeather?.value?.temperature?.toString() ?: ""
+        nowWeather?.value?.tempInCelsius?.let {
+            //todo celsius or fahrenheit
+            return Math.round(it).toString() + grabString(R.string.degree_symbol) + "F"
+        }
+
+        return ""
     }
 
     @Bindable

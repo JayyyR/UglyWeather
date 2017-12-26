@@ -1,9 +1,9 @@
 package com.joeracosta.uglyweather.network
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.joeracosta.uglyweather.App
 import com.joeracosta.uglyweather.BuildConfig
 import com.joeracosta.uglyweather.R
+import com.joeracosta.uglyweather.util.grabString
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -26,7 +26,7 @@ private val releaseClient = OkHttpClient.Builder()
 
 private val retrofit by lazy {
     Retrofit.Builder()
-            .baseUrl(BASE_URL + App.appResources.getString(R.string.api_key) + "/")
+            .baseUrl(BASE_URL + grabString(R.string.api_key) + "/")
             .client(if (BuildConfig.DEBUG) debugClient else releaseClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

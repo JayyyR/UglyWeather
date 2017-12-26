@@ -3,4 +3,5 @@
     <string name="now">Now</string>
     <string name="later">Later</string>
     <string name="location">Location</string>
+    <string name="degree_symbol">"\u00b0"</string>
 </resources>

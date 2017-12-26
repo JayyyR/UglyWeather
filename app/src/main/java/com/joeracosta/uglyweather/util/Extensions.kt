@@ -11,3 +11,7 @@ import io.reactivex.schedulers.Schedulers
 fun <T : Any> Observable<T>.offMain() : Observable<T> {
     return this.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 }
+
+fun Float.convertToFahrenheit() : Int {
+    return convertToFahrenheit(this)
+}

@@ -1,5 +1,6 @@
 package com.joeracosta.uglyweather.util
 
+import android.support.v4.content.res.ResourcesCompat
 import com.joeracosta.uglyweather.App
 
 /**
@@ -8,6 +9,10 @@ import com.joeracosta.uglyweather.App
 
 fun grabString(id : Int) : String {
     return App.appResources.getString(id)
+}
+
+fun grabColor(id : Int) : Int {
+    return ResourcesCompat.getColor(App.appResources, id, null)
 }
 
 fun convertToFahrenheit(tempInCelsius: Float) : Int{

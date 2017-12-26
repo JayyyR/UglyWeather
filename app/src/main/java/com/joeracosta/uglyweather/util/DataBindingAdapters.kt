@@ -1,6 +1,7 @@
 package com.joeracosta.uglyweather.util
 
 import android.databinding.BindingAdapter
+import android.graphics.drawable.AnimationDrawable
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.widget.SwipeRefreshLayout
 import android.widget.ImageView
@@ -24,7 +25,11 @@ fun setSwipeRefreshColors(view : SwipeRefreshLayout, colorRes1 : Int, colorRes2:
     view.setColorSchemeColors(grabColor(colorRes1), grabColor(colorRes2), grabColor(colorRes3))
 }
 
-@BindingAdapter("imageSrc")
+@BindingAdapter("animationSrc")
 fun setImageResource(view : ImageView, resource :Int){
-    view.setImageResource(resource)
+    view.setBackgroundResource(resource)
+
+    if (view.background is AnimationDrawable){
+        (view.background as AnimationDrawable).start()
+    }
 }

@@ -81,7 +81,7 @@ class NowFragmentViewModel : SmartViewModel() {
     }
 
     private fun fetchWeather() {
-        weatherAPI.getCurrentConditions("42.3601", "-71.0589")
+        weatherAPI.getCurrentConditions("40.9583570", "-74.1298680")
                 .offMain()
                 .subscribe(
                 { response ->

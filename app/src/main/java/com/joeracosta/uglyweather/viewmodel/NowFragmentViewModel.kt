@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import com.joeracosta.uglyweather.SmartViewModel
 import com.joeracosta.uglyweather.model.NowWeather
 import com.joeracosta.uglyweather.network.weatherAPI
+import com.joeracosta.uglyweather.util.offMain
 
 /**
  * Created by Joe on 12/26/2017.
@@ -23,13 +24,15 @@ class NowFragmentViewModel : SmartViewModel() {
 
 
     private fun fetchWeather() {
-        weatherAPI.getForecast("42.3601", "-71.0589").subscribe(
+        weatherAPI.getForecast("42.3601", "-71.0589")
+                .offMain()
+                .subscribe(
                 { response ->
                     nowWeather?.value = response.nowWeather
                     notifyChange()
                 },
                 { error ->
-                    //todo error
+                    System.out.print("") //todo
                 }
         ).addToComposite()
 

@@ -10,6 +10,6 @@ import retrofit2.http.Path
  */
 interface WeatherAPI {
 
-    @GET("/{lat},{lon}")
+    @GET("{lat},{lon}")
     fun getForecast(@Path("lat") latitude : String, @Path("lon") longitude : String) : Observable<WeatherResponse>
 }

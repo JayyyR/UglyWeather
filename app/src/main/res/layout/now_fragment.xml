@@ -26,29 +26,71 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
-                android:layout_height="196dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/image_guideline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/temperature_text"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="16dp"
+                android:gravity="bottom"
+                android:includeFontPadding="false"
+                android:text="@{viewModel.temperature}"
+                app:autoSizeMaxTextSize="64sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@+id/temp_guideline"
+                app:layout_constraintEnd_toStartOf="@+id/summary_text"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/image_guideline" />
+
+            <TextView
+                android:id="@+id/summary_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="@{viewModel.summary}"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/temperature_text"
+                app:layout_constraintEnd_toEndOf="@+id/imageView" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/image_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.50" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/temp_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.75" />
+
+            <TextView
+                android:id="@+id/feels_like_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@{viewModel.temperature}"
-                android:textSize="64sp"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                android:textSize="16sp"
+                android:text="@{viewModel.feelsLike}"
+                app:layout_constraintStart_toStartOf="@+id/temperature_text"
+                app:layout_constraintTop_toTopOf="@+id/temp_guideline" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/humidity_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.summary}"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView"
-                app:layout_constraintEnd_toEndOf="@+id/imageView" />
+                android:layout_marginTop="2dp"
+                android:text="@{viewModel.humidity}"
+                app:layout_constraintStart_toStartOf="@+id/temperature_text"
+                app:layout_constraintTop_toBottomOf="@+id/feels_like_text" />
+
         </android.support.constraint.ConstraintLayout>
 
 

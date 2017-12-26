@@ -13,3 +13,7 @@ fun grabString(id : Int) : String {
 fun convertToFahrenheit(tempInCelsius: Float) : Int{
     return Math.round((9F/5F) * tempInCelsius + 32)
 }
+
+fun decimalToPercentage(decimal : Float) : String {
+    return Math.round(decimal*100F).toString() + "%"
+}

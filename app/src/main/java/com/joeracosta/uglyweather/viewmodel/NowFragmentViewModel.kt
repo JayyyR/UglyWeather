@@ -6,6 +6,7 @@ import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
 import com.joeracosta.uglyweather.model.NowWeather
 import com.joeracosta.uglyweather.network.weatherAPI
+import com.joeracosta.uglyweather.util.decimalToPercentage
 import com.joeracosta.uglyweather.util.grabString
 import com.joeracosta.uglyweather.util.offMain
 
@@ -38,6 +39,16 @@ class NowFragmentViewModel : SmartViewModel() {
     @Bindable
     fun getSummary() : String {
         return nowWeather?.value?.summary ?: ""
+    }
+
+    @Bindable
+    fun getFeelsLike() : String {
+        return grabString(R.string.feels_like_label) + nowWeather?.value?.feelsLike?.let { Math.round(it).toString() + grabString(R.string.degree_symbol) + "F"}
+    }
+
+    @Bindable
+    fun getHumidity() : String {
+        return grabString(R.string.humidity_label) + nowWeather?.value?.humidity?.decimalToPercentage()
     }
 
     @Bindable

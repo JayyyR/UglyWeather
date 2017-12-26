@@ -1,6 +1,7 @@
 package com.joeracosta.uglyweather.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
+import android.databinding.Bindable
 import com.joeracosta.uglyweather.SmartViewModel
 import com.joeracosta.uglyweather.model.NowWeather
 import com.joeracosta.uglyweather.network.weatherAPI
@@ -22,9 +23,19 @@ class NowFragmentViewModel : SmartViewModel() {
         return nowWeather as MutableLiveData<NowWeather>
     }
 
+    @Bindable
+    fun getTemperature() : String {
+        return nowWeather?.value?.temperature?.toString() ?: ""
+    }
+
+    @Bindable
+    fun getSummary() : String {
+        return nowWeather?.value?.summary ?: ""
+    }
+
 
     private fun fetchWeather() {
-        weatherAPI.getForecast("42.3601", "-71.0589")
+        weatherAPI.getCurrentConditions("42.3601", "-71.0589")
                 .offMain()
                 .subscribe(
                 { response ->

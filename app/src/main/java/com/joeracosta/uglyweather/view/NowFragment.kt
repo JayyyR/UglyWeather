@@ -1,14 +1,12 @@
 package com.joeracosta.uglyweather.view
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.joeracosta.library.activity.SimpleFragment
-import com.joeracosta.uglyweather.R
+import com.joeracosta.uglyweather.databinding.NowFragmentBinding
 import com.joeracosta.uglyweather.viewmodel.NowFragmentViewModel
 
 /**
@@ -17,14 +15,17 @@ import com.joeracosta.uglyweather.viewmodel.NowFragmentViewModel
 class NowFragment : SimpleFragment() {
 
     private lateinit var viewModel : NowFragmentViewModel
+    private lateinit var binding: NowFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.now_fragment, container, false)
+        binding = NowFragmentBinding.inflate(inflater)
+        return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(NowFragmentViewModel::class.java)
+        binding.viewModel = viewModel
         viewModel.observeWeather()
     }
 }

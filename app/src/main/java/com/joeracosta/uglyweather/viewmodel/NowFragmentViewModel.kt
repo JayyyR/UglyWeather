@@ -53,12 +53,23 @@ class NowFragmentViewModel : SmartViewModel() {
 
     @Bindable
     fun getFeelsLike() : String {
-        return grabString(R.string.feels_like_label) + nowWeather?.value?.feelsLike?.let { Math.round(it).toString() + grabString(R.string.degree_symbol) + "F"}
+        var feelsLike = grabString(R.string.feels_like_label)
+
+        nowWeather?.value?.feelsLike?.let {
+            feelsLike += Math.round(it).toString() + grabString(R.string.degree_symbol) + "F"
+        }
+
+        return feelsLike
     }
 
     @Bindable
     fun getHumidity() : String {
-        return grabString(R.string.humidity_label) + nowWeather?.value?.humidity?.decimalToPercentage()
+        var humidity =  grabString(R.string.humidity_label)
+        nowWeather?.value?.humidity?.let {
+           humidity += it.decimalToPercentage()
+        }
+
+        return humidity
     }
 
     @Bindable

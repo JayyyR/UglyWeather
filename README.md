@@ -1,10 +1,11 @@
 # UglyWeather
 Ugly Weather, Beautiful Code
 
-MVVM using Android Lifecycle Components
-RxJava2
-DataBinding
-Kotlin
+MVVM using Android Lifecycle Components    
+RxJava2   
+DataBinding    
+Kotlin   
+[SimpleFragments](https://github.com/JayyyR/SimpleFragments) - my navigation library
 
 # License
  ```

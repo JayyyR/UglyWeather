@@ -2,6 +2,7 @@ package com.joeracosta.uglyweather.util
 
 import android.support.v4.content.res.ResourcesCompat
 import com.joeracosta.uglyweather.App
+import com.joeracosta.uglyweather.R
 
 /**
  * Created by Joe on 12/26/2017.
@@ -21,4 +22,11 @@ fun convertToFahrenheit(tempInCelsius: Float) : Int{
 
 fun decimalToPercentage(decimal : Float) : String {
     return Math.round(decimal*100F).toString() + "%"
+}
+
+fun grabDrawableResourceFromIcon(iconName : String) : Int{
+    return when (iconName) {
+        "clear_day" -> R.drawable.clear_day
+        else -> R.drawable.clear_day //todo better default
+    }
 }

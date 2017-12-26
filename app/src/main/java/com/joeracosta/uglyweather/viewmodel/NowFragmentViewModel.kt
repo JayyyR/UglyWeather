@@ -7,6 +7,7 @@ import com.joeracosta.uglyweather.SmartViewModel
 import com.joeracosta.uglyweather.model.NowWeather
 import com.joeracosta.uglyweather.network.weatherAPI
 import com.joeracosta.uglyweather.util.decimalToPercentage
+import com.joeracosta.uglyweather.util.grabDrawableResourceFromIcon
 import com.joeracosta.uglyweather.util.grabString
 import com.joeracosta.uglyweather.util.offMain
 
@@ -24,6 +25,15 @@ class NowFragmentViewModel : SmartViewModel() {
             fetchWeather()
         }
         return nowWeather as MutableLiveData<NowWeather>
+    }
+
+    @Bindable
+    fun getImageResource () : Int {
+        nowWeather?.value?.icon?.let {
+            return grabDrawableResourceFromIcon(it)
+        }
+
+        return 0
     }
 
     @Bindable

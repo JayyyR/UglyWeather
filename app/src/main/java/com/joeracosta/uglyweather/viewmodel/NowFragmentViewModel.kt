@@ -40,6 +40,13 @@ class NowFragmentViewModel : SmartViewModel() {
         return nowWeather?.value?.summary ?: ""
     }
 
+    @Bindable
+    val refreshListener = {
+        if (nowWeather == null){ //shouldn't happen
+            nowWeather = MutableLiveData()
+        }
+        fetchWeather()
+    }
 
     private fun fetchWeather() {
         weatherAPI.getCurrentConditions("42.3601", "-71.0589")

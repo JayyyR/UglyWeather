@@ -1,2 +1,2 @@
 # UglyWeather
-Weather App
+Ugly Weather, Beautiful Code

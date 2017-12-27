@@ -4,6 +4,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.databinding.Bindable
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
+import com.joeracosta.uglyweather.lastLat
+import com.joeracosta.uglyweather.lastLon
 import com.joeracosta.uglyweather.model.NowWeather
 import com.joeracosta.uglyweather.network.weatherAPI
 import com.joeracosta.uglyweather.util.decimalToPercentage
@@ -81,7 +83,13 @@ class NowFragmentViewModel : SmartViewModel() {
     }
 
     private fun fetchWeather() {
-        weatherAPI.getCurrentConditions("40.9583570", "-74.1298680")
+
+        if (lastLat == null || lastLon == null){
+            //todo must give location permission or set zip
+            return
+        }
+
+        weatherAPI.getCurrentConditions(lastLat!!, lastLon!!)
                 .offMain()
                 .subscribe(
                 { response ->

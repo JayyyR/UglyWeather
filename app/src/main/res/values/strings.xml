@@ -6,4 +6,6 @@
     <string name="feels_like_label">Feels Like:\u0020</string>
     <string name="humidity_label">Humidity:\u0020</string>
     <string name="degree_symbol">"\u00b0"</string>
+    <string name="lat_storage">stored_lat</string>
+    <string name="lon_storage">stored_lon</string>
 </resources>

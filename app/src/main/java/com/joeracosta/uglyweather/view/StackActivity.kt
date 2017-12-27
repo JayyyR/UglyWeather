@@ -2,10 +2,13 @@ package com.joeracosta.uglyweather.view
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import com.joeracosta.library.activity.FragmentStackActivity
 import com.joeracosta.uglyweather.R
-import com.tbruyelle.rxpermissions2.Permission
+import com.joeracosta.uglyweather.lastLat
+import com.joeracosta.uglyweather.lastLon
+import com.joeracosta.uglyweather.util.grabString
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -21,31 +24,37 @@ class StackActivity : FragmentStackActivity() {
         setContentView(R.layout.stack_activity)
 
         if (!hasFragments()) {
-            addFragmentToStack(MapFragment(), R.id.main_view, null, null)
-            requestPermissions()
+            initializeWithLocation()
         }
     }
 
-    private fun requestPermissions(){
-        RxPermissions(this).requestEach(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-                .subscribe({ permissions ->
-                    if (permissions.granted){
-                        getLocation()
-                    } else{
-                        //todo need to enable permissions
+    private fun initializeWithLocation() {
+        RxPermissions(this).request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe({ granted ->
+                    if (granted) {
+                        loadNewLocation()
+                    } else {
+                        loadOldLocation()
+                        showInitialUI()
                     }
                 }).addToComposite()
     }
 
     @SuppressLint("MissingPermission")
-    private fun getLocation(){
+    private fun loadNewLocation() {
         ReactiveLocationProvider(this).lastKnownLocation
                 .subscribe({ location ->
-                    System.out.print("")
+                    lastLon = location.longitude.toString()
+                    lastLat = location.latitude.toString()
+                    saveLastLocation(lastLat as String, lastLon as String)
                 }, {
-                    System.out.print("") //todo fail getting location
+                    //todo fail getting location, prompt user to add zip
+                    loadOldLocation()
+                }, {
+                    showInitialUI()
                 }).addToComposite()
     }
+
     override fun onDestroy() {
         super.onDestroy()
         disposables.dispose()
@@ -53,5 +62,23 @@ class StackActivity : FragmentStackActivity() {
 
     private fun Disposable.addToComposite() {
         disposables.add(this)
+    }
+
+    private fun saveLastLocation(lat: String, lon: String) {
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putString(grabString(R.string.lat_storage), lat)
+        editor.putString(grabString(R.string.lon_storage), lon)
+        editor.apply()
+    }
+
+    private fun loadOldLocation(){
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        lastLat = sharedPref.getString(grabString(R.string.lat_storage), null)
+        lastLon = sharedPref.getString(grabString(R.string.lon_storage), null)
+    }
+
+    private fun showInitialUI(){
+        addFragmentToStack(MapFragment(), R.id.main_view, null, null)
     }
 }

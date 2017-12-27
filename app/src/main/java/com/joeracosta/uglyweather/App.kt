@@ -29,3 +29,7 @@ class App : Application() {
         appResources = resources
     }
 }
+
+
+var lastLon : String? = null
+var lastLat : String? = null

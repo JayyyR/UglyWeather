@@ -33,6 +33,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 app:animationSrc="@{viewModel.imageResource}"
                 app:layout_constraintBottom_toTopOf="@+id/image_guideline"
                 app:layout_constraintEnd_toEndOf="parent"

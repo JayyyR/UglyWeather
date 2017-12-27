@@ -27,9 +27,9 @@ fun setSwipeRefreshColors(view : SwipeRefreshLayout, colorRes1 : Int, colorRes2:
 
 @BindingAdapter("animationSrc")
 fun setImageResource(view : ImageView, resource :Int){
-    view.setBackgroundResource(resource)
+    view.setImageResource(resource)
 
-    if (view.background is AnimationDrawable){
-        (view.background as AnimationDrawable).start()
+    if (view.drawable is AnimationDrawable){
+        (view.drawable as AnimationDrawable).start()
     }
 }

@@ -34,7 +34,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    compile 'com.github.JayyyR:SimpleFragments:v0.6-alpha@aar'
+    compile 'com.github.JayyyR:SimpleFragments:v0.7-alpha@aar'
     compile 'com.android.support:design:26.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.google.code.gson:gson:2.8.2'
@@ -49,6 +49,9 @@ dependencies {
     compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    compile 'pl.charmas.android:android-reactive-location2:2.1@aar'
+    compile 'com.google.android.gms:play-services-location:11.8.0'
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 }
 
 

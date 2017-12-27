@@ -27,7 +27,7 @@ fun decimalToPercentage(decimal : Float) : String {
 fun grabDrawableResourceFromIcon(iconName : String) : Int{
     return when (iconName) {
         "clear-day" -> R.drawable.clear_day_animation
-        "clear-night" -> R.drawable.partly_cloudy_night_animation
+        "clear-night" -> R.drawable.clear_night_animation
         "rain" -> R.drawable.rain_animation
         "snow" -> R.drawable.snow_animation
         "wind" -> R.drawable.wind_animation

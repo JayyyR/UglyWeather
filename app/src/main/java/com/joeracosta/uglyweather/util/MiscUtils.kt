@@ -6,28 +6,34 @@ import com.joeracosta.uglyweather.R
 import java.util.*
 
 
-
 /**
  * Created by Joe on 12/26/2017.
  */
 
-fun grabString(id : Int) : String {
+fun grabString(id: Int): String {
     return App.appResources.getString(id)
 }
 
-fun grabColor(id : Int) : Int {
+fun grabColor(id: Int): Int {
     return ResourcesCompat.getColor(App.appResources, id, null)
 }
 
-fun convertToFahrenheit(tempInCelsius: Float) : Int{
-    return Math.round((9F/5F) * tempInCelsius + 32)
+fun formatWeatherInFahrenheit(weatherInFahrenheit: Float?): String {
+    weatherInFahrenheit?.let {
+        return Math.round(it).toString() + grabString(R.string.degree_symbol) + "F"
+    }
+    return ""
 }
 
-fun decimalToPercentage(decimal : Float) : String {
-    return Math.round(decimal*100F).toString() + "%"
+fun convertToFahrenheit(tempInCelsius: Float): Int {
+    return Math.round((9F / 5F) * tempInCelsius + 32)
 }
 
-fun grabAnimationDrawableResourceFromIcon(iconName : String) : Int{
+fun decimalToPercentage(decimal: Float): String {
+    return Math.round(decimal * 100F).toString() + "%"
+}
+
+fun grabAnimationDrawableResourceFromIcon(iconName: String): Int {
     return when (iconName) {
         "clear-day" -> R.drawable.clear_day_animation
         "clear-night" -> R.drawable.clear_night_animation
@@ -40,6 +46,22 @@ fun grabAnimationDrawableResourceFromIcon(iconName : String) : Int{
         "partly-cloudy-day" -> R.drawable.partly_cloudy_day_animation
         "partly-cloudy-night" -> R.drawable.partly_cloudy_night_animation
         else -> R.drawable.clear_day_animation //todo better default
+    }
+}
+
+fun grabIconDrawableResourceFromIcon(iconName: String): Int {
+    return when (iconName) {
+        "clear-day" -> R.drawable.clear_day_icon
+        "clear-night" -> R.drawable.clear_night_icon
+        "rain" -> R.drawable.rain_icon
+        "snow" -> R.drawable.snow_icon
+        "wind" -> R.drawable.wind_icon
+        "sleet" -> R.drawable.sleet_icon
+        "fog" -> R.drawable.fog_icon
+        "cloudy" -> R.drawable.cloudy_icon
+        "partly-cloudy-day" -> R.drawable.partly_cloudy_day_icon
+        "partly-cloudy-night" -> R.drawable.partly_cloudy_night_icon
+        else -> R.drawable.clear_day_icon //todo better default
     }
 }
 

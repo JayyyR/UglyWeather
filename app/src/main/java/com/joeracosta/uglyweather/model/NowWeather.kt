@@ -10,7 +10,7 @@ data class NowWeather(
         val icon : String? = null,
 
         @SerializedName("temperature")
-        val tempInCelsius: Float? = null,
+        val temperatureInFahrenheit: Float? = null,
 
         @SerializedName("apparentTemperature")
         val feelsLike : Float? = null,

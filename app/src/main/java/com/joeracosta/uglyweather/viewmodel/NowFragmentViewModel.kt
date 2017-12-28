@@ -35,18 +35,12 @@ class NowFragmentViewModel : SmartViewModel() {
         nowWeather?.value?.icon?.let {
             return grabAnimationDrawableResourceFromIcon(it)
         }
-
         return 0
     }
 
     @Bindable
     fun getTemperature() : String {
-        nowWeather?.value?.tempInCelsius?.let {
-            //todo celsius or fahrenheit
-            return Math.round(it).toString() + grabString(R.string.degree_symbol) + "F"
-        }
-
-        return ""
+        return formatWeatherInFahrenheit(nowWeather?.value?.temperatureInFahrenheit)
     }
 
     @Bindable

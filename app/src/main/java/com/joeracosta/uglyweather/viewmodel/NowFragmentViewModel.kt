@@ -4,20 +4,21 @@ import android.arch.lifecycle.MutableLiveData
 import android.databinding.Bindable
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
-import com.joeracosta.uglyweather.lastLat
-import com.joeracosta.uglyweather.lastLon
 import com.joeracosta.uglyweather.model.NowWeather
 import com.joeracosta.uglyweather.network.weatherAPI
-import com.joeracosta.uglyweather.util.decimalToPercentage
-import com.joeracosta.uglyweather.util.grabDrawableResourceFromIcon
-import com.joeracosta.uglyweather.util.grabString
-import com.joeracosta.uglyweather.util.offMain
+import com.joeracosta.uglyweather.util.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 /**
  * Created by Joe on 12/26/2017.
  */
 
 class NowFragmentViewModel : SmartViewModel() {
+
+    init {
+        EventBus.getDefault().register(this)
+    }
 
     private var nowWeather: MutableLiveData<NowWeather>? = null
 
@@ -83,13 +84,11 @@ class NowFragmentViewModel : SmartViewModel() {
     }
 
     private fun fetchWeather() {
-
-        if (lastLat == null || lastLon == null){
-            //todo must give location permission or set zip
+        if (latitude == null || longitude == null){
+            //todo prompt user to choose a location in the app
             return
         }
-
-        weatherAPI.getCurrentConditions(lastLat!!, lastLon!!)
+        weatherAPI.getCurrentConditions(latitude!!, longitude!!)
                 .offMain()
                 .subscribe(
                 { response ->
@@ -100,6 +99,15 @@ class NowFragmentViewModel : SmartViewModel() {
                     System.out.print("") //todo
                 }
         ).addToComposite()
+    }
 
+    override fun onCleared() {
+        super.onCleared()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe
+    fun onLocationUpdated(event : LocationUpdatedEvent){
+        fetchWeather()
     }
 }

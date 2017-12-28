@@ -32,4 +32,8 @@ class NowFragment : SimpleFragment() {
             binding.swipeContainer.isRefreshing = false
         })
     }
+
+    override fun onShown() {
+        //todo if location changed then reload
+    }
 }

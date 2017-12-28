@@ -6,16 +6,17 @@ import android.content.Context
 import android.os.Bundle
 import com.joeracosta.library.activity.FragmentStackActivity
 import com.joeracosta.uglyweather.R
-import com.joeracosta.uglyweather.lastLat
-import com.joeracosta.uglyweather.lastLon
 import com.joeracosta.uglyweather.util.grabString
+import com.joeracosta.uglyweather.util.latitude
+import com.joeracosta.uglyweather.util.longitude
+import com.joeracosta.uglyweather.util.updateLocation
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import pl.charmas.android.reactivelocation2.ReactiveLocationProvider
 
 
-class StackActivity : FragmentStackActivity() {
+class SingleActivity : FragmentStackActivity() {
 
     private val disposables = CompositeDisposable()
 
@@ -24,7 +25,14 @@ class StackActivity : FragmentStackActivity() {
         setContentView(R.layout.stack_activity)
 
         if (!hasFragments()) {
-            initializeWithLocation()
+
+            if (true) {//todo check if curloc setting on
+                initializeWithLocation()
+            } else{
+                loadSavedLocation()
+            }
+
+            addFragmentToStack(MapFragment(), R.id.main_view, null, null)
         }
     }
 
@@ -34,8 +42,8 @@ class StackActivity : FragmentStackActivity() {
                     if (granted) {
                         loadNewLocation()
                     } else {
-                        loadOldLocation()
-                        showInitialUI()
+                        //todo setcurloc to false
+                        loadSavedLocation()
                     }
                 }).addToComposite()
     }
@@ -44,15 +52,25 @@ class StackActivity : FragmentStackActivity() {
     private fun loadNewLocation() {
         ReactiveLocationProvider(this).lastKnownLocation
                 .subscribe({ location ->
-                    lastLon = location.longitude.toString()
-                    lastLat = location.latitude.toString()
-                    saveLastLocation(lastLat as String, lastLon as String)
+                    updateLocation(location.latitude.toString(), location.longitude.toString())
                 }, {
                     //todo fail getting location, prompt user to add zip
-                    loadOldLocation()
-                }, {
-                    showInitialUI()
+                    //todo set cur loc to false
+                    loadSavedLocation()
                 }).addToComposite()
+    }
+
+    private fun storeSavedLocation(lat: String, lon: String) {
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putString(grabString(R.string.lat_storage), lat)
+        editor.putString(grabString(R.string.lon_storage), lon)
+        editor.apply()
+    }
+
+    private fun loadSavedLocation(){
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        updateLocation(sharedPref.getString(grabString(R.string.lat_storage), null), sharedPref.getString(grabString(R.string.lon_storage), null))
     }
 
     override fun onDestroy() {
@@ -62,23 +80,5 @@ class StackActivity : FragmentStackActivity() {
 
     private fun Disposable.addToComposite() {
         disposables.add(this)
-    }
-
-    private fun saveLastLocation(lat: String, lon: String) {
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putString(grabString(R.string.lat_storage), lat)
-        editor.putString(grabString(R.string.lon_storage), lon)
-        editor.apply()
-    }
-
-    private fun loadOldLocation(){
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        lastLat = sharedPref.getString(grabString(R.string.lat_storage), null)
-        lastLon = sharedPref.getString(grabString(R.string.lon_storage), null)
-    }
-
-    private fun showInitialUI(){
-        addFragmentToStack(MapFragment(), R.id.main_view, null, null)
     }
 }

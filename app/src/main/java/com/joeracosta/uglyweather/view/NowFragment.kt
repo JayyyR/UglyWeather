@@ -20,7 +20,7 @@ class NowFragment : SimpleFragment() {
     private lateinit var binding: NowFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = NowFragmentBinding.inflate(inflater)
+        binding = NowFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 

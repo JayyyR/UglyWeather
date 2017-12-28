@@ -20,9 +20,10 @@ class LaterFragment : SimpleFragment() {
 
     private lateinit var viewModel : LaterFragmentViewModel
     private lateinit var binding: LaterFragmentBinding
+    private var adapter : LaterWeatherAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = LaterFragmentBinding.inflate(inflater)
+        binding = LaterFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -31,10 +32,17 @@ class LaterFragment : SimpleFragment() {
         viewModel = ViewModelProviders.of(this).get(LaterFragmentViewModel::class.java)
         binding.viewModel = viewModel
         binding.recyclerViewLaterWeather.layoutManager = LinearLayoutManager(context)
-        viewModel.observeWeather().observe(this, Observer<LaterWeather> {
+        viewModel.observeWeather().observe(this, Observer<LaterWeather> { laterWeather ->
             binding.swipeContainer.isRefreshing = false
-
-            //todo recyerview
+            laterWeather?.data?.let {
+                if (adapter == null){
+                    adapter = LaterWeatherAdapter(it)
+                    binding.recyclerViewLaterWeather.adapter = adapter
+                } else{
+                    adapter?.laterWeatherData = it
+                    adapter?.notifyDataSetChanged()
+                }
+            }
         })
     }
 }

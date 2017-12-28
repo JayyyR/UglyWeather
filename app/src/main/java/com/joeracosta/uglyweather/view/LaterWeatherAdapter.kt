@@ -1,21 +1,23 @@
 package com.joeracosta.uglyweather.view
 
 import android.support.v7.widget.RecyclerView
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.joeracosta.uglyweather.databinding.LaterWeatherCardBinding
 import com.joeracosta.uglyweather.model.LaterWeatherDay
+import com.joeracosta.uglyweather.viewmodel.LaterWeatherCardViewModel
 
 /**
  * Created by Joe on 12/28/2017.
  */
-class LaterWeatherAdapter(var laterWeatherData: List<LaterWeatherDay>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LaterWeatherAdapter(var laterWeatherData: List<LaterWeatherDay>) : RecyclerView.Adapter<LaterWeatherCardViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LaterWeatherCardViewHolder {
+        return LaterWeatherCardViewHolder(LaterWeatherCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onBindViewHolder(holder: LaterWeatherCardViewHolder?, position: Int) {
+        holder?.bind(laterWeatherData[position])
     }
 
     override fun getItemCount(): Int {
@@ -23,6 +25,17 @@ class LaterWeatherAdapter(var laterWeatherData: List<LaterWeatherDay>) : Recycle
     }
 }
 
-class LaterWeatherCardViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+class LaterWeatherCardViewHolder(val binding: LaterWeatherCardBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    val viewModel = LaterWeatherCardViewModel()
+
+    init {
+        binding.viewModel = viewModel
+    }
+
+    fun bind(laterWeatherDay: LaterWeatherDay) {
+        viewModel.laterWeatherDay = laterWeatherDay
+        binding.executePendingBindings()
+    }
 
 }

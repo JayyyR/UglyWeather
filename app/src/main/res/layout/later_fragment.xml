@@ -69,6 +69,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_later_weather"
                 android:layout_width="0dp"
+                android:orientation="vertical"
                 android:layout_height="0dp"
                 android:background="@color/page_background"
                 app:layout_constraintBottom_toBottomOf="parent"

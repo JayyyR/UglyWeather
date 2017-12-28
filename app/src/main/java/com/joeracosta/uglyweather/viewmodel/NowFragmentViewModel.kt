@@ -84,11 +84,11 @@ class NowFragmentViewModel : SmartViewModel() {
     }
 
     private fun fetchWeather() {
-        if (latitude == null || longitude == null){
+        if (SessionData.latitude == null || SessionData.longitude == null){
             //todo prompt user to choose a location in the app
             return
         }
-        weatherAPI.getCurrentConditions(latitude!!, longitude!!)
+        weatherAPI.getCurrentConditions(SessionData.latitude!!, SessionData.longitude!!)
                 .offMain()
                 .subscribe(
                 { response ->

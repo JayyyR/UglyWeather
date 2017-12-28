@@ -8,5 +8,8 @@ import com.google.gson.annotations.SerializedName
 
 data class WeatherResponse(
         @SerializedName("currently")
-        val nowWeather: NowWeather? = null
+        val nowWeather: NowWeather? = null,
+
+        @SerializedName("daily")
+        val laterWeather : LaterWeather? = null
 )

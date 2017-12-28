@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName
  * Created by Joe on 12/25/2017.
  */
 data class NowWeather(
-
         @SerializedName("icon")
         val icon : String? = null,
 
@@ -21,5 +20,4 @@ data class NowWeather(
 
         @SerializedName("summary")
         val summary : String? = null
-
 )

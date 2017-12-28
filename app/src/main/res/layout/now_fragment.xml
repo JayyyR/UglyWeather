@@ -47,6 +47,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
+                android:textColor="@color/primary_text"
                 android:gravity="bottom"
                 android:includeFontPadding="false"
                 android:text="@{viewModel.temperature}"
@@ -62,6 +63,7 @@
                 android:id="@+id/summary_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
                 android:layout_marginEnd="24dp"
                 android:includeFontPadding="false"
                 android:text="@{viewModel.summary}"
@@ -90,6 +92,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@{viewModel.feelsLike}"
                 android:textSize="16sp"
+                android:textColor="@color/primary_text"
                 app:layout_constraintStart_toStartOf="@+id/temperature_text"
                 app:layout_constraintTop_toBottomOf="@+id/temperature_text" />
 
@@ -99,6 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="@{viewModel.humidity}"
+                android:textColor="@color/primary_text"
                 app:layout_constraintStart_toStartOf="@+id/temperature_text"
                 app:layout_constraintTop_toBottomOf="@+id/feels_like_text" />
 

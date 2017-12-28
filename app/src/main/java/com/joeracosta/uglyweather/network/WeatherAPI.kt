@@ -12,4 +12,7 @@ interface WeatherAPI {
 
     @GET("{lat},{lon}?units=us&exclude=minutely,hourly,daily,alerts,flags")
     fun getCurrentConditions(@Path("lat") latitude : String, @Path("lon") longitude : String) : Observable<WeatherResponse>
+
+    @GET("{lat},{lon}?units=us&exclude=minutely,hourly,currently,alerts,flags")
+    fun getLaterConditions(@Path("lat") latitude: String, @Path("lon") longitude: String) : Observable<WeatherResponse>
 }

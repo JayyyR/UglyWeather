@@ -33,6 +33,6 @@ private val retrofit by lazy {
             .build()
 }
 
-val weatherAPI by lazy {
+val weatherAPI : WeatherAPI by lazy {
     retrofit.create(WeatherAPI::class.java)
 }

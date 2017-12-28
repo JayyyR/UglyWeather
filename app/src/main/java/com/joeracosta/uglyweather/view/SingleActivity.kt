@@ -6,9 +6,8 @@ import android.content.Context
 import android.os.Bundle
 import com.joeracosta.library.activity.FragmentStackActivity
 import com.joeracosta.uglyweather.R
+import com.joeracosta.uglyweather.util.SessionData
 import com.joeracosta.uglyweather.util.grabString
-import com.joeracosta.uglyweather.util.latitude
-import com.joeracosta.uglyweather.util.longitude
 import com.joeracosta.uglyweather.util.updateLocation
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.CompositeDisposable
@@ -27,7 +26,7 @@ class SingleActivity : FragmentStackActivity() {
         if (!hasFragments()) {
 
             if (true) {//todo check if curloc setting on
-                initializeWithLocation()
+                loadCurrentLocation()
             } else{
                 loadSavedLocation()
             }
@@ -36,11 +35,19 @@ class SingleActivity : FragmentStackActivity() {
         }
     }
 
-    private fun initializeWithLocation() {
+    @SuppressLint("MissingPermission")
+    private fun loadCurrentLocation() {
         RxPermissions(this).request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
                 .subscribe({ granted ->
                     if (granted) {
-                        loadNewLocation()
+                        ReactiveLocationProvider(this).lastKnownLocation
+                                .subscribe({ location ->
+                                    SessionData.updateLocation(location.latitude.toString(), location.longitude.toString())
+                                }, {
+                                    //todo fail getting location, prompt user to add zip
+                                    //todo set cur loc to false
+                                    loadSavedLocation()
+                                }).addToComposite()
                     } else {
                         //todo setcurloc to false
                         loadSavedLocation()
@@ -48,29 +55,9 @@ class SingleActivity : FragmentStackActivity() {
                 }).addToComposite()
     }
 
-    @SuppressLint("MissingPermission")
-    private fun loadNewLocation() {
-        ReactiveLocationProvider(this).lastKnownLocation
-                .subscribe({ location ->
-                    updateLocation(location.latitude.toString(), location.longitude.toString())
-                }, {
-                    //todo fail getting location, prompt user to add zip
-                    //todo set cur loc to false
-                    loadSavedLocation()
-                }).addToComposite()
-    }
-
-    private fun storeSavedLocation(lat: String, lon: String) {
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putString(grabString(R.string.lat_storage), lat)
-        editor.putString(grabString(R.string.lon_storage), lon)
-        editor.apply()
-    }
-
     private fun loadSavedLocation(){
         val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        updateLocation(sharedPref.getString(grabString(R.string.lat_storage), null), sharedPref.getString(grabString(R.string.lon_storage), null))
+        SessionData.updateLocation(sharedPref.getString(grabString(R.string.lat_storage), null), sharedPref.getString(grabString(R.string.lon_storage), null))
     }
 
     override fun onDestroy() {

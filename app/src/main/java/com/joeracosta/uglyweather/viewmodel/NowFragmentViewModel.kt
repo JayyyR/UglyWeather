@@ -33,7 +33,7 @@ class NowFragmentViewModel : SmartViewModel() {
     @Bindable
     fun getImageResource () : Int {
         nowWeather?.value?.icon?.let {
-            return grabDrawableResourceFromIcon(it)
+            return grabAnimationDrawableResourceFromIcon(it)
         }
 
         return 0

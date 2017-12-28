@@ -9,4 +9,6 @@
     <string name="lat_storage">stored_lat</string>
     <string name="lon_storage">stored_lon</string>
     <string name="this_week">This Week:</string>
+    <string name="later_date_format">EEE MM/dd</string>
+    <string name="today">Today</string>
 </resources>

@@ -3,57 +3,79 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.constraint.ConstraintLayout
+    <data>
+        <import type="com.joeracosta.uglyweather.R" />
+        <variable
+            name="viewModel"
+            type="com.joeracosta.uglyweather.viewmodel.LaterFragmentViewModel" />
+    </data>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/page_background">
+        app:swipeRefreshListener="@{viewModel.refreshListener}"
+        app:swipecolor1="@{R.color.refresh_progress_1}"
+        app:swipecolor2="@{R.color.refresh_progress_2}"
+        app:swipecolor3="@{R.color.refresh_progress_3}">
 
-        <View
-            android:id="@+id/color_view"
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@color/accent"
-            app:layout_constraintBottom_toBottomOf="@+id/week_summary_statement"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:background="@color/page_background">
 
-        <TextView
-            android:id="@+id/this_week_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/this_week"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <View
+                android:id="@+id/color_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/accent"
+                app:layout_constraintBottom_toBottomOf="@+id/week_summary_statement"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/week_summary_statement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
-            android:paddingBottom="16dp"
-            android:text="TextView"
-            android:textColor="@color/primary_text"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/this_week_label"
-            app:layout_constraintTop_toBottomOf="@+id/this_week_label" />
+            <TextView
+                android:id="@+id/this_week_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/this_week"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/color_view"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_later_weather"
-            android:background="@color/page_background"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/color_view"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/week_summary_statement"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="16dp"
+                android:text="@{viewModel.weekSummary}"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/this_week_label"
+                app:layout_constraintTop_toBottomOf="@+id/this_week_label" />
 
-    </android.support.constraint.ConstraintLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_later_weather"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/page_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/color_view" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </layout>

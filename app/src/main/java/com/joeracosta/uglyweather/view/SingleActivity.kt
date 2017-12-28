@@ -8,7 +8,6 @@ import com.joeracosta.library.activity.FragmentStackActivity
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.util.SessionData
 import com.joeracosta.uglyweather.util.grabString
-import com.joeracosta.uglyweather.util.updateLocation
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

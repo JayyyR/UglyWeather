@@ -27,6 +27,13 @@ class SettingsFragmentViewModel : SmartViewModel() {
     var zipCode = StoredData.getStoredZip()
 
     @Bindable
+    var savedLocationText = StoredData.getStoredLocationName()
+        set (value){
+            field = value
+            notifyChange()
+        }
+
+    @Bindable
     fun getZipForeground() : Int {
         return if (useCurLocation) grabColor(R.color.disabled) else 0
     }
@@ -63,6 +70,7 @@ class SettingsFragmentViewModel : SmartViewModel() {
                         StoredData.storeSavedLong(lon)
                         StoredData.storeSavedLocationName(locationName)
                         SessionData.updateLocation(lat, lon, locationName)
+                        savedLocationText = locationName
                     }
 
                 }, {

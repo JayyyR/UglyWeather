@@ -34,7 +34,7 @@ class MapFragment : FragmentMapFragment() {
         when (item.itemId) {
             R.id.menu_now -> showFragmentInMap(NowFragment(), R.id.content_view, R.id.menu_now.toString())
             R.id.menu_later -> showFragmentInMap(LaterFragment(), R.id.content_view, R.id.menu_later.toString())
-            R.id.menu_location -> System.out.print("")
+            R.id.menu_settings -> showFragmentInMap(SettingsFragment(), R.id.content_view, R.id.menu_settings.toString())
         }
         true
     }

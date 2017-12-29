@@ -15,7 +15,8 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Created by Joe on 12/26/2017.
  */
 
-private const val BASE_URL = "https://api.darksky.net/forecast/"
+private const val WEATHER_BASE_URL = "https://api.darksky.net/forecast/"
+private const val GEOCODING_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/"
 
 private val debugClient = OkHttpClient.Builder()
         .addNetworkInterceptor(StethoInterceptor())
@@ -24,9 +25,18 @@ private val debugClient = OkHttpClient.Builder()
 private val releaseClient = OkHttpClient.Builder()
         .build()
 
-private val retrofit by lazy {
+private val weatherRetrofit by lazy {
     Retrofit.Builder()
-            .baseUrl(BASE_URL + grabString(R.string.api_key) + "/")
+            .baseUrl(WEATHER_BASE_URL + grabString(R.string.weather_api_key) + "/")
+            .client(if (BuildConfig.DEBUG) debugClient else releaseClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+}
+
+private val geoRetrofit by lazy {
+    Retrofit.Builder()
+            .baseUrl(GEOCODING_BASE_URL)
             .client(if (BuildConfig.DEBUG) debugClient else releaseClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -34,5 +44,9 @@ private val retrofit by lazy {
 }
 
 val weatherAPI : WeatherAPI by lazy {
-    retrofit.create(WeatherAPI::class.java)
+    weatherRetrofit.create(WeatherAPI::class.java)
+}
+
+val geoAPI : GeoAPI by lazy {
+    geoRetrofit.create(GeoAPI::class.java)
 }

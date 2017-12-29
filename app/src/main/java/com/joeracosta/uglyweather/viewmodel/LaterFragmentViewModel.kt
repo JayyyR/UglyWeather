@@ -53,15 +53,7 @@ class LaterFragmentViewModel : SmartViewModel(){
     fun getWeekSummary() : String {
         return laterWeather?.value?.summary ?: ""
     }
-
-    @Bindable
-    val refreshListener = {
-        if (laterWeather == null){ //shouldn't happen
-            laterWeather = MutableLiveData()
-        }
-        fetchWeather()
-    }
-
+    
     override fun onCleared() {
         super.onCleared()
         EventBus.getDefault().unregister(this)

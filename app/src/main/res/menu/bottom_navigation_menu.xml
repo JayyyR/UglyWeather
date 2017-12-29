@@ -14,9 +14,9 @@
         android:title="@string/later"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/menu_location"
-        android:icon="@drawable/ic_location"
+        android:id="@+id/menu_settings"
+        android:icon="@drawable/ic_settings"
         android:enabled="true"
-        android:title="@string/location"
+        android:title="@string/settings"
         app:showAsAction="ifRoom" />
 </menu>

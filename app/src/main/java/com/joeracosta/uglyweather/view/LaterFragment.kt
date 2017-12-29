@@ -33,7 +33,6 @@ class LaterFragment : SimpleFragment() {
         binding.viewModel = viewModel
         binding.recyclerViewLaterWeather.layoutManager = LinearLayoutManager(context)
         viewModel.observeWeather().observe(this, Observer<LaterWeather> { laterWeather ->
-            binding.swipeContainer.isRefreshing = false
             laterWeather?.data?.let {
                 if (adapter == null){
                     adapter = LaterWeatherAdapter(it)

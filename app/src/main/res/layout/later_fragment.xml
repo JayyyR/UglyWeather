@@ -10,17 +10,6 @@
             type="com.joeracosta.uglyweather.viewmodel.LaterFragmentViewModel" />
     </data>
 
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:swipeRefreshListener="@{viewModel.refreshListener}"
-        app:swipecolor1="@{R.color.refresh_progress_1}"
-        app:swipecolor2="@{R.color.refresh_progress_2}"
-        app:swipecolor3="@{R.color.refresh_progress_3}">
-
-
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -90,6 +79,4 @@
                 android:background="@drawable/shadow"/>
 
         </android.support.constraint.ConstraintLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
-
 </layout>

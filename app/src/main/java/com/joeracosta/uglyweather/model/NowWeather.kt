@@ -21,3 +21,12 @@ data class NowWeather(
         @SerializedName("summary")
         val summary : String? = null
 )
+
+
+data class WeatherResponse(
+        @SerializedName("currently")
+        val nowWeather: NowWeather? = null,
+
+        @SerializedName("daily")
+        val laterWeather : LaterWeather? = null
+)

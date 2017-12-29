@@ -1,7 +1,9 @@
 package com.joeracosta.uglyweather.viewmodel
 
 import android.databinding.Bindable
+import android.view.View
 import android.widget.CompoundButton
+import com.joeracosta.uglyweather.BR
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
 import com.joeracosta.uglyweather.network.geoAPI
@@ -11,7 +13,16 @@ import org.greenrobot.eventbus.EventBus
 /**
  * Created by Joe on 12/28/2017.
  */
+enum class LatestLoadingStatus{
+    SUCCESS, FAILURE, LOADING, NONE
+}
 class SettingsFragmentViewModel : SmartViewModel() {
+
+    private var latestLoadingStatus = LatestLoadingStatus.NONE
+    set (value){
+        field = value
+        notifyChange()
+    }
 
     @Bindable
     var useCurLocation = StoredData.getStoredShouldUseCurLocation()
@@ -30,8 +41,40 @@ class SettingsFragmentViewModel : SmartViewModel() {
     var savedLocationText = StoredData.getStoredLocationName()
         set (value){
             field = value
-            notifyChange()
+            notifyPropertyChanged(BR.zipLoadStatusVisibility)
+            notifyPropertyChanged(BR.zipLoadStatusResource)
+            notifyPropertyChanged(BR.zipLoadLoadingVisibility)
         }
+
+    @Bindable
+    fun getZipLoadStatusResource() : Int {
+       return when (latestLoadingStatus) {
+            LatestLoadingStatus.NONE -> 0
+            LatestLoadingStatus.FAILURE -> R.drawable.ic_error
+            LatestLoadingStatus.SUCCESS -> R.drawable.ic_success_check
+            LatestLoadingStatus.LOADING -> 0
+        }
+    }
+
+    @Bindable
+    fun getZipLoadStatusVisibility() : Int {
+       return when (latestLoadingStatus) {
+            LatestLoadingStatus.NONE -> View.GONE
+            LatestLoadingStatus.FAILURE -> View.VISIBLE
+            LatestLoadingStatus.SUCCESS -> View.VISIBLE
+            LatestLoadingStatus.LOADING -> View.GONE
+        }
+    }
+
+    @Bindable
+    fun getZipLoadLoadingVisibility() : Int {
+        return when (latestLoadingStatus) {
+            LatestLoadingStatus.NONE -> View.GONE
+            LatestLoadingStatus.FAILURE -> View.GONE
+            LatestLoadingStatus.SUCCESS -> View.GONE
+            LatestLoadingStatus.LOADING -> View.VISIBLE
+        }
+    }
 
     @Bindable
     fun getZipForeground() : Int {
@@ -55,13 +98,15 @@ class SettingsFragmentViewModel : SmartViewModel() {
             //todo toast enter zip
             return
         }
+        latestLoadingStatus = LatestLoadingStatus.LOADING
         geoAPI.getLatLong(grabString(R.string.geocoding_api_key), zipCode)
                 .offMain()
                 .subscribe({ geoResponse ->
-
                     if (geoResponse.status != "OK") {
                         //todo error setting zip
+                        latestLoadingStatus = LatestLoadingStatus.FAILURE
                     } else {
+                        latestLoadingStatus = LatestLoadingStatus.SUCCESS
                         val lat = geoResponse.results?.get(0)?.geometry?.location?.lat
                         val lon = geoResponse.results?.get(0)?.geometry?.location?.lon
                         val locationName = formatFormattedAddress(geoResponse.results?.get(0)?.formattedAddress)
@@ -74,7 +119,7 @@ class SettingsFragmentViewModel : SmartViewModel() {
                     }
 
                 }, {
-                    System.out.print("")
+                    latestLoadingStatus = LatestLoadingStatus.FAILURE
                     //todo error setting zip
                 }).addToComposite()
     }

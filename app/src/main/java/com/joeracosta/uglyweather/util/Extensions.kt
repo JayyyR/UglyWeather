@@ -12,10 +12,6 @@ fun <T : Any> Observable<T>.offMain() : Observable<T> {
     return this.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 }
 
-fun Float.convertToFahrenheit() : Int {
-    return convertToFahrenheit(this)
-}
-
 fun Float.decimalToPercentage() : String {
     return decimalToPercentage(this)
 }

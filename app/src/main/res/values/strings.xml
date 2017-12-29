@@ -9,6 +9,7 @@
     <string name="lat_storage">stored_lat</string>
     <string name="lon_storage">stored_lon</string>
     <string name="zip_storage">stored_zip</string>
+    <string name="use_celsius_storage">stored_celsius_preference</string>
     <string name="location_preference_storage">stored_location_preference</string>
     <string name="this_week">This Week:</string>
     <string name="later_date_format">EEE MM/dd</string>

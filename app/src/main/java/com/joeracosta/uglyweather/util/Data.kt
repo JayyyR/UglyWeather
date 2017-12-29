@@ -10,7 +10,7 @@ import org.greenrobot.eventbus.EventBus
  */
 
 object Data {
-    fun useSavedLocation(){
+    fun useSavedLocation() {
         StoredData.storeShouldUseCurLocation(false)
         SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon())
     }
@@ -35,34 +35,49 @@ object SessionData {
 
 object StoredData {
 
-    fun getStoredLat() : String? {
+    fun getStoredLat(): String? {
         return App.sharedPreferences.getString(grabString(R.string.lat_storage), null)
     }
-    fun getStoredLon() : String? {
+
+    fun getStoredLon(): String? {
         return App.sharedPreferences.getString(grabString(R.string.lon_storage), null)
     }
-    fun getStoredZip() : String {
+
+    fun getStoredZip(): String {
         return App.sharedPreferences.getString(grabString(R.string.zip_storage), "")
     }
+
+    fun getUseCelsius(): Boolean {
+        return App.sharedPreferences.getBoolean(grabString(R.string.use_celsius_storage), false)
+    }
+
     @SuppressLint("ApplySharedPref")
-    fun getStoredShouldUseCurLocation() : Boolean {
+    fun getStoredShouldUseCurLocation(): Boolean {
         val returnVal = App.sharedPreferences.getBoolean(grabString(R.string.location_preference_storage), true)
-        if (!App.sharedPreferences.contains(grabString(R.string.location_preference_storage))){
+        if (!App.sharedPreferences.contains(grabString(R.string.location_preference_storage))) {
             //default should be true and use commit to be synchronous
             App.sharedPreferences.edit().putBoolean(grabString(R.string.location_preference_storage), true).commit()
         }
         return returnVal
     }
-    fun storeShouldUseCurLocation(shouldUserCurLocation : Boolean){
+
+    fun storeShouldUseCurLocation(shouldUserCurLocation: Boolean) {
         App.sharedPreferences.edit().putBoolean(grabString(R.string.location_preference_storage), shouldUserCurLocation).apply()
     }
-    fun storeSavedLat(lat : String?){
+
+    fun storeSavedLat(lat: String?) {
         App.sharedPreferences.edit().putString(grabString(R.string.lat_storage), lat).apply()
     }
-    fun storeSavedLong(lon : String?){
+
+    fun storeSavedLong(lon: String?) {
         App.sharedPreferences.edit().putString(grabString(R.string.lon_storage), lon).apply()
     }
-    fun storeSavedZip(zip : String){
+
+    fun storeSavedZip(zip: String) {
         App.sharedPreferences.edit().putString(grabString(R.string.zip_storage), zip).apply()
+    }
+
+    fun storeUseCelsius(useCelsius : Boolean){
+        App.sharedPreferences.edit().putBoolean(grabString(R.string.use_celsius_storage), useCelsius).apply()
     }
 }

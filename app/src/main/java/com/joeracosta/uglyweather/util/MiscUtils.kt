@@ -25,8 +25,16 @@ fun formatWeatherInFahrenheit(weatherInFahrenheit: Float?): String {
     return ""
 }
 
-fun convertToFahrenheit(tempInCelsius: Float): Int {
-    return Math.round((9F / 5F) * tempInCelsius + 32)
+fun formatWeatherInCelsius(weatherInFahrenheit: Float?) : String {
+    weatherInFahrenheit?.let {
+        return convertToCelsius(it).toString() + grabString(R.string.degree_symbol) + "C"
+    }
+
+    return ""
+}
+
+fun convertToCelsius(tempInFahrenheit: Float): Int {
+    return Math.round((5F / 9F) * (tempInFahrenheit - 32))
 }
 
 fun decimalToPercentage(decimal: Float): String {

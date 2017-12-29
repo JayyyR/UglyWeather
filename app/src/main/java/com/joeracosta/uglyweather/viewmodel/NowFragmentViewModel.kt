@@ -2,6 +2,7 @@ package com.joeracosta.uglyweather.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.databinding.Bindable
+import com.joeracosta.uglyweather.BR
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
 import com.joeracosta.uglyweather.model.NowWeather
@@ -40,7 +41,10 @@ class NowFragmentViewModel : SmartViewModel() {
 
     @Bindable
     fun getTemperature() : String {
-        return formatWeatherInFahrenheit(nowWeather?.value?.temperatureInFahrenheit)
+        return if (StoredData.getUseCelsius())
+            formatWeatherInCelsius(nowWeather?.value?.temperatureInFahrenheit)
+        else
+            formatWeatherInFahrenheit(nowWeather?.value?.temperatureInFahrenheit)
     }
 
     @Bindable
@@ -103,5 +107,10 @@ class NowFragmentViewModel : SmartViewModel() {
     @Subscribe
     fun onLocationUpdated(event : LocationUpdatedEvent){
         fetchWeather()
+    }
+
+    @Subscribe
+    fun onCelsiusPreferenceSwitched(event : UseCelsiusEvent){
+        notifyPropertyChanged(BR.temperature)
     }
 }

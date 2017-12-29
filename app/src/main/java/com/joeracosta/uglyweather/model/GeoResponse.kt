@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
  */
 data class GeoResponse(
         @SerializedName("results")
-        val results : GeoResults? = null,
+        val results : List<GeoResults>? = null,
 
         @SerializedName("status")
         val status : String? = null

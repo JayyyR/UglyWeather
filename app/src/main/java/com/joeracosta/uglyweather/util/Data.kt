@@ -41,8 +41,8 @@ object StoredData {
     fun getStoredLon() : String? {
         return App.sharedPreferences.getString(grabString(R.string.lon_storage), null)
     }
-    fun getStoredZip() : String? {
-        return App.sharedPreferences.getString(grabString(R.string.zip_storage), null)
+    fun getStoredZip() : String {
+        return App.sharedPreferences.getString(grabString(R.string.zip_storage), "")
     }
     @SuppressLint("ApplySharedPref")
     fun getStoredShouldUseCurLocation() : Boolean {
@@ -55,5 +55,14 @@ object StoredData {
     }
     fun storeShouldUseCurLocation(shouldUserCurLocation : Boolean){
         App.sharedPreferences.edit().putBoolean(grabString(R.string.location_preference_storage), shouldUserCurLocation).apply()
+    }
+    fun storeSavedLat(lat : String?){
+        App.sharedPreferences.edit().putString(grabString(R.string.lat_storage), lat).apply()
+    }
+    fun storeSavedLong(lon : String?){
+        App.sharedPreferences.edit().putString(grabString(R.string.lon_storage), lon).apply()
+    }
+    fun storeSavedZip(zip : String){
+        App.sharedPreferences.edit().putString(grabString(R.string.zip_storage), zip).apply()
     }
 }

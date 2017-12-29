@@ -10,6 +10,7 @@
     <color name="tertiary_text">#757575</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
+    <color name="disabled">#73BDBDBD</color>
     <color name="white">#FFFFFF</color>
     <color name="refresh_progress_1">@color/accent</color>
     <color name="refresh_progress_2">#ffeb3b</color>

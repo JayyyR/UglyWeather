@@ -14,4 +14,7 @@
     <string name="later_date_format">EEE MM/dd</string>
     <string name="today">Today</string>
     <string name="use_current_location_label">Use Current Location:</string>
+    <string name="celsius">Use Celsius:</string>
+    <string name="set_zip">Set Zip:</string>
+    <string name="set">Set</string>
 </resources>

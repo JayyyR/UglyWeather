@@ -20,7 +20,7 @@
         android:background="@color/page_background">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/curLocLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -32,18 +32,94 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/curLocSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="8dp"
             android:checked="@{viewModel.useCurLocation}"
-            app:toggleListener="@{view.checkedChangeListener}"
+            app:toggleListener="@{view.curLocCheckListener}"
             android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintStart_toEndOf="@+id/curLocLabel"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/degree_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/celsius"
+            android:textColor="@color/primary_text"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/curLocLabel"
+            app:layout_constraintTop_toBottomOf="@+id/curLocLabel" />
+
+
+        <Switch
+            android:id="@+id/degree_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/degree_label"
+            app:layout_constraintTop_toTopOf="@id/degree_label" />
+
+        <TextView
+            android:id="@+id/zip_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/primary_text"
+            android:text="@string/set_zip"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/degree_label"
+            app:layout_constraintTop_toBottomOf="@+id/degree_label" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:foreground="@{viewModel.zipForeground}"
+            android:layout_marginTop="8dp"
+            app:cardElevation="1dp"
+            app:layout_constraintEnd_toEndOf="@id/degree_switch"
+            app:layout_constraintStart_toStartOf="@id/zip_label"
+            app:layout_constraintTop_toBottomOf="@id/zip_label">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="16dp">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:text="@={viewModel.zipCode}"
+                    android:enabled="@{viewModel.zipEnabled}"
+                    android:inputType="number"
+                    android:maxLength="5" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:enabled="@{viewModel.zipEnabled}"
+                    android:onClick="@{() -> viewModel.saveZip()}"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/set"/>
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
 
     </android.support.constraint.ConstraintLayout>
 </layout>

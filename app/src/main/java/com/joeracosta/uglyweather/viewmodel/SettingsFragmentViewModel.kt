@@ -4,10 +4,7 @@ import android.databinding.Bindable
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
 import com.joeracosta.uglyweather.network.geoAPI
-import com.joeracosta.uglyweather.util.SessionData
-import com.joeracosta.uglyweather.util.StoredData
-import com.joeracosta.uglyweather.util.grabString
-import com.joeracosta.uglyweather.util.offMain
+import com.joeracosta.uglyweather.util.*
 
 /**
  * Created by Joe on 12/28/2017.
@@ -20,30 +17,41 @@ class SettingsFragmentViewModel : SmartViewModel() {
             field = value
             notifyChange()
         }
-        get() {
-            return field
-        }
 
     @Bindable
-    private var zipCode = ""
-        set (value) {
-            field = value
-            notifyChange()
-        }
+    var zipCode = StoredData.getStoredZip()
 
-    fun saveZipCodeLocation() {
-        geoAPI.getLatLong(grabString(R.string.geocoding_api_key), "07452")
+    @Bindable
+    fun getZipForeground() : Int {
+        return if (useCurLocation) grabColor(R.color.disabled) else 0
+    }
+
+    @Bindable
+    fun getZipEnabled() : Boolean {
+        return !useCurLocation
+    }
+
+    fun saveZip() {
+        if (zipCode.isEmpty()){
+            //todo toast enter zip
+            return
+        }
+        geoAPI.getLatLong(grabString(R.string.geocoding_api_key), zipCode)
                 .offMain()
                 .subscribe({ geoResponse ->
 
                     if (geoResponse.status != "OK") {
                         //todo error setting zip
                     } else {
-                        SessionData.updateLocation(geoResponse.results?.geometry?.location?.lat, geoResponse.results?.geometry?.location?.lon)
+                        StoredData.storeSavedZip(zipCode)
+                        StoredData.storeSavedLat(geoResponse.results?.get(0)?.geometry?.location?.lat)
+                        StoredData.storeSavedLong(geoResponse.results?.get(0)?.geometry?.location?.lon)
+                        SessionData.updateLocation(geoResponse.results?.get(0)?.geometry?.location?.lat, geoResponse.results?.get(0)?.geometry?.location?.lon)
                     }
 
                 }, {
-                    System.out.print("");
+                    System.out.print("")
+                    //todo error setting zip
                 }).addToComposite()
     }
 }

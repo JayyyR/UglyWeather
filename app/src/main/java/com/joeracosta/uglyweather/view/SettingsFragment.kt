@@ -35,7 +35,8 @@ class SettingsFragment : SimpleFragment() {
         binding.viewModel = viewModel
     }
 
-    var checkedChangeListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+    //listener in the view because we need the activity reference to check for permissions and update location
+    var curLocCheckListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         if (isChecked) {
             (activity as SingleActivity).checkLocationPermission().subscribe({ granted ->
                 viewModel.useCurLocation = granted

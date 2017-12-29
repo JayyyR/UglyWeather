@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import com.joeracosta.library.activity.SimpleFragment
 import com.joeracosta.uglyweather.databinding.SettingsFragmentBinding
-import com.joeracosta.uglyweather.util.SessionData
+import com.joeracosta.uglyweather.util.Data
 import com.joeracosta.uglyweather.util.StoredData
 import com.joeracosta.uglyweather.viewmodel.SettingsFragmentViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -36,27 +36,19 @@ class SettingsFragment : SimpleFragment() {
     }
 
     var checkedChangeListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-
         if (isChecked) {
             (activity as SingleActivity).checkLocationPermission().subscribe({ granted ->
                 viewModel.useCurLocation = granted
                 StoredData.storeShouldUseCurLocation(granted)
                 if (granted) {
-                    (activity as SingleActivity).loadLastKnownLocation().subscribe({ location ->
-                        SessionData.updateLocation(location.latitude.toString(), location.longitude.toString())
-                    }, {
-                        //todo fail getting location, prompt user to add zip
-                        viewModel.useCurLocation = false
-                        StoredData.storeShouldUseCurLocation(false)
-                        SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon())
-                    }).addToComposite()
+                    (activity as SingleActivity).loadLastKnownLocation()
                 } else {
                     //todo snackbar to say you need to grant permissions
                 }
             }).addToComposite()
         } else {
             viewModel.useCurLocation = false
-            StoredData.storeShouldUseCurLocation(false)
+            Data.useSavedLocation()
         }
     }
 

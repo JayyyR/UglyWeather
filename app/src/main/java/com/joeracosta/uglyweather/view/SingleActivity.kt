@@ -6,6 +6,7 @@ import android.location.Location
 import android.os.Bundle
 import com.joeracosta.library.activity.FragmentStackActivity
 import com.joeracosta.uglyweather.R
+import com.joeracosta.uglyweather.util.Data
 import com.joeracosta.uglyweather.util.SessionData
 import com.joeracosta.uglyweather.util.StoredData
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -38,16 +39,8 @@ class SingleActivity : FragmentStackActivity() {
                 .subscribe({ granted ->
                     if (granted) {
                         loadLastKnownLocation()
-                                .subscribe({ location ->
-                                    SessionData.updateLocation(location.latitude.toString(), location.longitude.toString())
-                                }, {
-                                    //todo fail getting location, prompt user to add zip
-                                    StoredData.storeShouldUseCurLocation(false)
-                                    SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon())
-                                }).addToComposite()
                     } else {
-                        StoredData.storeShouldUseCurLocation(false)
-                        SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon())
+                        Data.useSavedLocation()
                     }
                 }).addToComposite()
     }
@@ -57,8 +50,11 @@ class SingleActivity : FragmentStackActivity() {
     }
 
     @SuppressLint("MissingPermission")
-    fun loadLastKnownLocation() : Observable<Location>{
-        return  ReactiveLocationProvider(this).lastKnownLocation
+    fun loadLastKnownLocation(){
+        ReactiveLocationProvider(this).lastKnownLocation //todo add case for location failure??
+                .subscribe({ location ->
+                    SessionData.updateLocation(location.latitude.toString(), location.longitude.toString())
+                }).addToComposite()
     }
 
     override fun onDestroy() {

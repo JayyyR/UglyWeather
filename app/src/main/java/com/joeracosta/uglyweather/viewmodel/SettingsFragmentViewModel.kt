@@ -1,9 +1,11 @@
 package com.joeracosta.uglyweather.viewmodel
 
+import android.databinding.Bindable
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
 import com.joeracosta.uglyweather.network.geoAPI
 import com.joeracosta.uglyweather.util.SessionData
+import com.joeracosta.uglyweather.util.StoredData
 import com.joeracosta.uglyweather.util.grabString
 import com.joeracosta.uglyweather.util.offMain
 
@@ -12,6 +14,22 @@ import com.joeracosta.uglyweather.util.offMain
  */
 class SettingsFragmentViewModel : SmartViewModel() {
 
+    @Bindable
+    var useCurLocation = StoredData.getStoredShouldUseCurLocation()
+        set(value) {
+            field = value
+            notifyChange()
+        }
+        get() {
+            return field
+        }
+
+    @Bindable
+    private var zipCode = ""
+        set (value) {
+            field = value
+            notifyChange()
+        }
 
     fun saveZipCodeLocation() {
         geoAPI.getLatLong(grabString(R.string.geocoding_api_key), "07452")
@@ -28,6 +46,4 @@ class SettingsFragmentViewModel : SmartViewModel() {
                     System.out.print("");
                 }).addToComposite()
     }
-
-
 }

@@ -2,13 +2,14 @@ package com.joeracosta.uglyweather.view
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
+import android.location.Location
 import android.os.Bundle
 import com.joeracosta.library.activity.FragmentStackActivity
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.util.SessionData
-import com.joeracosta.uglyweather.util.grabString
+import com.joeracosta.uglyweather.util.StoredData
 import com.tbruyelle.rxpermissions2.RxPermissions
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import pl.charmas.android.reactivelocation2.ReactiveLocationProvider
@@ -23,40 +24,41 @@ class SingleActivity : FragmentStackActivity() {
         setContentView(R.layout.stack_activity)
 
         if (!hasFragments()) {
-
-            if (true) {//todo check if curloc setting on
+            if (StoredData.getStoredShouldUseCurLocation()) {
                 loadCurrentLocation()
             } else{
-                loadSavedLocation()
+                SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon())
             }
-
             addFragmentToStack(MapFragment(), R.id.main_view, null, null)
         }
     }
 
-    @SuppressLint("MissingPermission")
     private fun loadCurrentLocation() {
-        RxPermissions(this).request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        checkLocationPermission()
                 .subscribe({ granted ->
                     if (granted) {
-                        ReactiveLocationProvider(this).lastKnownLocation
+                        loadLastKnownLocation()
                                 .subscribe({ location ->
                                     SessionData.updateLocation(location.latitude.toString(), location.longitude.toString())
                                 }, {
                                     //todo fail getting location, prompt user to add zip
-                                    //todo set cur loc to false
-                                    loadSavedLocation()
+                                    StoredData.storeShouldUseCurLocation(false)
+                                    SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon())
                                 }).addToComposite()
                     } else {
-                        //todo setcurloc to false
-                        loadSavedLocation()
+                        StoredData.storeShouldUseCurLocation(false)
+                        SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon())
                     }
                 }).addToComposite()
     }
 
-    private fun loadSavedLocation(){
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        SessionData.updateLocation(sharedPref.getString(grabString(R.string.lat_storage), null), sharedPref.getString(grabString(R.string.lon_storage), null))
+    fun checkLocationPermission() : Observable<Boolean> {
+        return RxPermissions(this).request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    }
+
+    @SuppressLint("MissingPermission")
+    fun loadLastKnownLocation() : Observable<Location>{
+        return  ReactiveLocationProvider(this).lastKnownLocation
     }
 
     override fun onDestroy() {

@@ -4,7 +4,9 @@ import android.databinding.BindingAdapter
 import android.graphics.drawable.AnimationDrawable
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.widget.SwipeRefreshLayout
+import android.widget.CompoundButton
 import android.widget.ImageView
+import android.widget.Switch
 
 /**
  * Created by Joe on 12/25/2017.
@@ -32,4 +34,9 @@ fun setImageResource(view : ImageView, resource :Int){
     if (view.drawable is AnimationDrawable){
         (view.drawable as AnimationDrawable).start()
     }
+}
+
+@BindingAdapter("toggleListener")
+fun setToggleListener(view : Switch, listener : CompoundButton.OnCheckedChangeListener){
+    view.setOnCheckedChangeListener(listener)
 }

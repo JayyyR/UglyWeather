@@ -5,16 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import com.joeracosta.library.activity.SimpleFragment
 import com.joeracosta.uglyweather.databinding.SettingsFragmentBinding
+import com.joeracosta.uglyweather.util.SessionData
+import com.joeracosta.uglyweather.util.StoredData
 import com.joeracosta.uglyweather.viewmodel.SettingsFragmentViewModel
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 /**
  * Created by Joe on 12/28/2017.
  */
 class SettingsFragment : SimpleFragment() {
 
-    private lateinit var viewModel : SettingsFragmentViewModel
+    private val disposables = CompositeDisposable()
+    private lateinit var viewModel: SettingsFragmentViewModel
     private lateinit var binding: SettingsFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -25,8 +31,41 @@ class SettingsFragment : SimpleFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SettingsFragmentViewModel::class.java)
+        binding.view = this
         binding.viewModel = viewModel
-        viewModel.saveZipCodeLocation()
     }
 
+    var checkedChangeListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+
+        if (isChecked) {
+            (activity as SingleActivity).checkLocationPermission().subscribe({ granted ->
+                viewModel.useCurLocation = granted
+                StoredData.storeShouldUseCurLocation(granted)
+                if (granted) {
+                    (activity as SingleActivity).loadLastKnownLocation().subscribe({ location ->
+                        SessionData.updateLocation(location.latitude.toString(), location.longitude.toString())
+                    }, {
+                        //todo fail getting location, prompt user to add zip
+                        viewModel.useCurLocation = false
+                        StoredData.storeShouldUseCurLocation(false)
+                        SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon())
+                    }).addToComposite()
+                } else {
+                    //todo snackbar to say you need to grant permissions
+                }
+            }).addToComposite()
+        } else {
+            viewModel.useCurLocation = false
+            StoredData.storeShouldUseCurLocation(false)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
+    }
+
+    private fun Disposable.addToComposite() {
+        disposables.add(this)
+    }
 }

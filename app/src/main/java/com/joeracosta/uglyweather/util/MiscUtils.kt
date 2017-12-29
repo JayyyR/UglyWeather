@@ -4,6 +4,7 @@ import android.support.v4.content.res.ResourcesCompat
 import com.joeracosta.uglyweather.App
 import com.joeracosta.uglyweather.R
 import java.util.*
+import java.util.regex.Pattern
 
 
 /**
@@ -39,6 +40,25 @@ fun convertToCelsius(tempInFahrenheit: Float): Int {
 
 fun decimalToPercentage(decimal: Float): String {
     return Math.round(decimal * 100F).toString() + "%"
+}
+
+fun formatFormattedAddress(formattedAddress : String?) : String {
+    if (formattedAddress == null){
+        return ""
+    }
+    val matcher = Pattern.compile("\\d+").matcher(formattedAddress)
+    matcher.find()
+    var indexOfFirstDigit = -1
+    try {
+         indexOfFirstDigit = formattedAddress.indexOf(matcher.group())
+    } catch (e : IllegalStateException){
+        return formattedAddress
+    }
+    if (indexOfFirstDigit != -1) {
+        return formattedAddress.substring(0, indexOfFirstDigit)
+    } else{
+        return formattedAddress
+    }
 }
 
 fun grabAnimationDrawableResourceFromIcon(iconName: String): Int {

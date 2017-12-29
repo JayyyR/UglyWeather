@@ -16,7 +16,10 @@ data class GeoResponse(
 
 data class GeoResults(
         @SerializedName("geometry")
-        val geometry: GeoGeometry? = null
+        val geometry: GeoGeometry? = null,
+
+        @SerializedName("formatted_address")
+        val formattedAddress : String? = null
 )
 
 data class GeoGeometry(

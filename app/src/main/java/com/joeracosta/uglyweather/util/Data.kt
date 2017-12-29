@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.EventBus
 object Data {
     fun useSavedLocation() {
         StoredData.storeShouldUseCurLocation(false)
-        SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon())
+        SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon(), StoredData.getStoredLocationName())
     }
 }
 
@@ -21,11 +21,13 @@ object SessionData {
         private set
     var latitude: String? = null
         private set
+    var locationName : String? = null
 
-    fun updateLocation(newLat: String?, newLon: String?) {
+    fun updateLocation(newLat: String?, newLon: String?, newLocationName : String?) {
         val locationUpdated = (newLat != latitude || newLon != longitude)
         latitude = newLat
         longitude = newLon
+        locationName = newLocationName
 
         if (locationUpdated && newLat != null && newLon != null) {
             EventBus.getDefault().post(LocationUpdatedEvent())
@@ -45,6 +47,10 @@ object StoredData {
 
     fun getStoredZip(): String {
         return App.sharedPreferences.getString(grabString(R.string.zip_storage), "")
+    }
+
+    fun getStoredLocationName() : String {
+        return App.sharedPreferences.getString(grabString(R.string.location_name_storage), "")
     }
 
     fun getUseCelsius(): Boolean {
@@ -79,5 +85,9 @@ object StoredData {
 
     fun storeUseCelsius(useCelsius : Boolean){
         App.sharedPreferences.edit().putBoolean(grabString(R.string.use_celsius_storage), useCelsius).apply()
+    }
+
+    fun storeSavedLocationName(locationName : String){
+        App.sharedPreferences.edit().putString(grabString(R.string.location_name_storage), locationName).apply()
     }
 }

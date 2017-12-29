@@ -57,10 +57,12 @@ class SettingsFragmentViewModel : SmartViewModel() {
                     } else {
                         val lat = geoResponse.results?.get(0)?.geometry?.location?.lat
                         val lon = geoResponse.results?.get(0)?.geometry?.location?.lon
+                        val locationName = formatFormattedAddress(geoResponse.results?.get(0)?.formattedAddress)
                         StoredData.storeSavedZip(zipCode)
                         StoredData.storeSavedLat(lat)
                         StoredData.storeSavedLong(lon)
-                        SessionData.updateLocation(lat, lon)
+                        StoredData.storeSavedLocationName(locationName)
+                        SessionData.updateLocation(lat, lon, locationName)
                     }
 
                 }, {

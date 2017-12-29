@@ -18,4 +18,5 @@
     <string name="celsius">Use Celsius:</string>
     <string name="set_zip">Set Zip:</string>
     <string name="set">Set</string>
+    <string name="location_name_storage">stored_location_name</string>
 </resources>

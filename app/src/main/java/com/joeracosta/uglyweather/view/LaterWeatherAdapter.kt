@@ -15,6 +15,10 @@ import org.greenrobot.eventbus.Subscribe
  */
 class LaterWeatherAdapter(var laterWeatherData: List<LaterWeatherDay>) : RecyclerView.Adapter<LaterWeatherCardViewHolder>() {
 
+    init {
+        EventBus.getDefault().register(this)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LaterWeatherCardViewHolder {
         return LaterWeatherCardViewHolder(LaterWeatherCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
@@ -27,19 +31,13 @@ class LaterWeatherAdapter(var laterWeatherData: List<LaterWeatherDay>) : Recycle
         return laterWeatherData.size
     }
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
-        super.onAttachedToRecyclerView(recyclerView)
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView?) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        EventBus.getDefault().unregister(this)
-    }
-
     @Subscribe
     fun onCelsiusPreferenceSwitched(event : UseCelsiusEvent){
         notifyDataSetChanged()
+    }
+
+    fun destroy() {
+        EventBus.getDefault().unregister(this)
     }
 }
 

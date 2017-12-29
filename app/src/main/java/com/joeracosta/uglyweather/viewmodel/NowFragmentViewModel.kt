@@ -74,6 +74,11 @@ class NowFragmentViewModel : SmartViewModel() {
     }
 
     @Bindable
+    fun getLocationText() : String {
+        return SessionData.locationName ?: ""
+    }
+
+    @Bindable
     val refreshListener = {
         if (nowWeather == null){ //shouldn't happen
             nowWeather = MutableLiveData()

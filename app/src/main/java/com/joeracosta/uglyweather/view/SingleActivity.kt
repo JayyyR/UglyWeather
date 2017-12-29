@@ -14,6 +14,8 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import pl.charmas.android.reactivelocation2.ReactiveLocationProvider
+import android.location.Geocoder
+import java.util.*
 
 
 class SingleActivity : FragmentStackActivity() {
@@ -28,7 +30,7 @@ class SingleActivity : FragmentStackActivity() {
             if (StoredData.getStoredShouldUseCurLocation()) {
                 loadCurrentLocation()
             } else{
-                SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon())
+                SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon(), StoredData.getStoredLocationName())
             }
             addFragmentToStack(MapFragment(), R.id.main_view, null, null)
         }
@@ -53,7 +55,9 @@ class SingleActivity : FragmentStackActivity() {
     fun loadLastKnownLocation(){
         ReactiveLocationProvider(this).lastKnownLocation //todo add case for location failure??
                 .subscribe({ location ->
-                    SessionData.updateLocation(location.latitude.toString(), location.longitude.toString())
+                    val geocoderLocation = Geocoder(this, Locale.getDefault()).getFromLocation(location.latitude, location.longitude, 1)?.get(0)
+                    SessionData.updateLocation(location.latitude.toString(), location.longitude.toString(),
+                            geocoderLocation?.locality + ", " + geocoderLocation?.adminArea)
                 }).addToComposite()
     }
 

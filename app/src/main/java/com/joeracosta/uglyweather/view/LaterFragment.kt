@@ -44,4 +44,9 @@ class LaterFragment : SimpleFragment() {
             }
         })
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        adapter?.destroy()
+    }
 }

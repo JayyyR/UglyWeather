@@ -38,7 +38,7 @@ class LaterFragment : SimpleFragment() {
         binding.recyclerViewLaterWeather.layoutManager = LinearLayoutManager(context)
 
         viewModel.alertUserSubject.subscribe({ stringRes ->
-            Snackbar.make(binding.root, stringRes, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, stringRes, Snackbar.LENGTH_LONG).show()
         }).addToComposite()
 
         viewModel.observeWeather().observe(this, Observer<LaterWeather> { laterWeather ->

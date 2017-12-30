@@ -35,7 +35,7 @@ class NowFragment : SimpleFragment() {
 
         viewModel.alertUserSubject.subscribe({ stringRes ->
             binding.swipeContainer.isRefreshing = false
-            Snackbar.make(binding.root, stringRes, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, stringRes, Snackbar.LENGTH_LONG).show()
         }).addToComposite()
 
         viewModel.observeWeather().observe(this, Observer<NowWeather> {

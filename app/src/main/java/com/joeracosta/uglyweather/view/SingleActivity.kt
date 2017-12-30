@@ -49,7 +49,7 @@ class SingleActivity : FragmentStackActivity() {
                     } else {
                         Data.useSavedLocation()
                         val view = if (findViewById<View>(R.id.content_view) != null) findViewById<View>(R.id.content_view) else findViewById<View>(R.id.main_view)
-                        Snackbar.make(view, R.string.set_location_prompt, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(view, R.string.set_location_prompt, Snackbar.LENGTH_LONG).show()
                     }
                 }).addToComposite()
     }

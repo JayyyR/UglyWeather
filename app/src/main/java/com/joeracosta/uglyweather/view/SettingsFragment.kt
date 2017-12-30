@@ -38,7 +38,7 @@ class SettingsFragment : SimpleFragment() {
         viewModel = ViewModelProviders.of(this).get(SettingsFragmentViewModel::class.java)
 
         viewModel.alertUserSubject.subscribe({ stringRes ->
-            Snackbar.make(binding.root, stringRes, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, stringRes, Snackbar.LENGTH_LONG).show()
         }).addToComposite()
 
         binding.view = this
@@ -54,7 +54,7 @@ class SettingsFragment : SimpleFragment() {
                 if (granted) {
                     (activity as SingleActivity).loadLastKnownLocation()
                 } else {
-                    Snackbar.make(binding.root, R.string.enable_location_permission, Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, R.string.enable_location_permission, Snackbar.LENGTH_LONG).show()
                 }
             }).addToComposite()
         } else {

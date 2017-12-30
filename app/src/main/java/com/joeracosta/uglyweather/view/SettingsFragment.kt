@@ -1,11 +1,13 @@
 package com.joeracosta.uglyweather.view
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
 import com.joeracosta.library.activity.SimpleFragment
 import com.joeracosta.uglyweather.R
@@ -15,6 +17,7 @@ import com.joeracosta.uglyweather.util.StoredData
 import com.joeracosta.uglyweather.viewmodel.SettingsFragmentViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+
 
 /**
  * Created by Joe on 12/28/2017.
@@ -58,6 +61,14 @@ class SettingsFragment : SimpleFragment() {
             viewModel.useCurLocation = false
             Data.useSavedLocation()
         }
+    }
+
+    fun setZipClicked(){
+        activity?.currentFocus?.let{
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+        viewModel.saveZip()
     }
 
     override fun onDestroy() {

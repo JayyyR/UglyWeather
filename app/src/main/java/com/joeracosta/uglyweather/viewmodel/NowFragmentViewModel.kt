@@ -118,5 +118,6 @@ class NowFragmentViewModel : SmartViewModel() {
     @Subscribe
     fun onCelsiusPreferenceSwitched(event : UseCelsiusEvent){
         notifyPropertyChanged(BR.temperature)
+        notifyPropertyChanged(BR.feelsLike)
     }
 }

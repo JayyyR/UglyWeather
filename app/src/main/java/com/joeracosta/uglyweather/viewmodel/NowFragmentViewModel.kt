@@ -55,13 +55,10 @@ class NowFragmentViewModel : SmartViewModel() {
 
     @Bindable
     fun getFeelsLike() : String {
-        var feelsLike = grabString(R.string.feels_like_label)
-
-        nowWeather?.value?.feelsLike?.let {
-            feelsLike += Math.round(it).toString() + grabString(R.string.degree_symbol) + "F"
-        }
-
-        return feelsLike
+        return if (StoredData.getUseCelsius())
+            grabString(R.string.feels_like_label) + formatWeatherInCelsius(nowWeather?.value?.feelsLike)
+        else
+            grabString(R.string.feels_like_label) + formatWeatherInFahrenheit(nowWeather?.value?.feelsLike)
     }
 
     @Bindable

@@ -15,6 +15,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import pl.charmas.android.reactivelocation2.ReactiveLocationProvider
 import android.location.Geocoder
+import android.support.design.widget.Snackbar
+import android.view.View
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 import java.util.*
@@ -46,6 +48,8 @@ class SingleActivity : FragmentStackActivity() {
                         loadLastKnownLocation()
                     } else {
                         Data.useSavedLocation()
+                        val view = if (findViewById<View>(R.id.content_view) != null) findViewById<View>(R.id.content_view) else findViewById<View>(R.id.main_view)
+                        Snackbar.make(view, R.string.set_location_prompt, Snackbar.LENGTH_SHORT).show()
                     }
                 }).addToComposite()
     }

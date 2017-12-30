@@ -3,6 +3,7 @@ package com.joeracosta.uglyweather.viewmodel
 import android.databinding.Bindable
 import android.view.View
 import android.widget.CompoundButton
+import com.crashlytics.android.Crashlytics
 import com.joeracosta.uglyweather.BR
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
@@ -117,7 +118,8 @@ class SettingsFragmentViewModel : SmartViewModel() {
                         savedLocationText = locationName
                     }
 
-                }, {
+                }, { error ->
+                    Crashlytics.logException(error)
                     latestLoadingStatus = LatestLoadingStatus.FAILURE
                     alertUserSubject.onNext(R.string.error_server)
                 }).addToComposite()

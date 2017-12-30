@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.joeracosta.library.activity.SimpleFragment
-import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.databinding.NowFragmentBinding
 import com.joeracosta.uglyweather.model.NowWeather
 import com.joeracosta.uglyweather.viewmodel.NowFragmentViewModel
@@ -35,9 +34,7 @@ class NowFragment : SimpleFragment() {
         binding.viewModel = viewModel
 
         viewModel.alertUserSubject.subscribe({ stringRes ->
-            if (stringRes == R.string.error_server){
-                binding.swipeContainer.isRefreshing = false
-            }
+            binding.swipeContainer.isRefreshing = false
             Snackbar.make(binding.root, stringRes, Snackbar.LENGTH_SHORT).show()
         }).addToComposite()
 

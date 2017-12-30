@@ -2,6 +2,7 @@ package com.joeracosta.uglyweather.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.databinding.Bindable
+import com.crashlytics.android.Crashlytics
 import com.joeracosta.uglyweather.BR
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
@@ -88,7 +89,9 @@ class NowFragmentViewModel : SmartViewModel() {
 
     private fun fetchWeather() {
         if (SessionData.latitude == null || SessionData.longitude == null){
-            alertUserSubject.onNext(R.string.set_location_prompt)
+            if (!StoredData.getStoredShouldUseCurLocation()) { //if we're not waiting for the cur loc
+                alertUserSubject.onNext(R.string.set_location_prompt)
+            }
             return
         }
         weatherAPI.getCurrentConditions(SessionData.latitude!!, SessionData.longitude!!)
@@ -99,6 +102,7 @@ class NowFragmentViewModel : SmartViewModel() {
                     notifyChange()
                 },
                 { error ->
+                    Crashlytics.logException(error)
                     alertUserSubject.onNext(R.string.error_server)
                 }
         ).addToComposite()

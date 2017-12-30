@@ -2,12 +2,14 @@ package com.joeracosta.uglyweather.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.databinding.Bindable
+import com.crashlytics.android.Crashlytics
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
 import com.joeracosta.uglyweather.model.LaterWeather
 import com.joeracosta.uglyweather.network.weatherAPI
 import com.joeracosta.uglyweather.util.LocationUpdatedEvent
 import com.joeracosta.uglyweather.util.SessionData
+import com.joeracosta.uglyweather.util.StoredData
 import com.joeracosta.uglyweather.util.offMain
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -34,7 +36,9 @@ class LaterFragmentViewModel : SmartViewModel(){
 
     private fun fetchWeather() {
         if (SessionData.latitude == null || SessionData.longitude == null){
-            alertUserSubject.onNext(R.string.set_location_prompt)
+            if (!StoredData.getStoredShouldUseCurLocation()) { //if we're not waiting for the cur loc
+                alertUserSubject.onNext(R.string.set_location_prompt)
+            }
             return
         }
         weatherAPI.getLaterConditions(SessionData.latitude!!, SessionData.longitude!!)
@@ -45,6 +49,7 @@ class LaterFragmentViewModel : SmartViewModel(){
                             notifyChange()
                         },
                         { error ->
+                            Crashlytics.logException(error)
                             alertUserSubject.onNext(R.string.error_server)
                         }
                 ).addToComposite()

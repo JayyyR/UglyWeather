@@ -15,6 +15,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import pl.charmas.android.reactivelocation2.ReactiveLocationProvider
 import android.location.Geocoder
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 import java.util.*
 
 
@@ -24,6 +26,7 @@ class SingleActivity : FragmentStackActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Fabric.with(this, Crashlytics())
         setContentView(R.layout.stack_activity)
 
         if (!hasFragments()) {

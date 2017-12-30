@@ -2,11 +2,13 @@ package com.joeracosta.uglyweather.view
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import com.joeracosta.library.activity.SimpleFragment
+import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.databinding.SettingsFragmentBinding
 import com.joeracosta.uglyweather.util.Data
 import com.joeracosta.uglyweather.util.StoredData
@@ -31,6 +33,11 @@ class SettingsFragment : SimpleFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SettingsFragmentViewModel::class.java)
+
+        viewModel.alertUserSubject.subscribe({ stringRes ->
+            Snackbar.make(binding.root, stringRes, Snackbar.LENGTH_SHORT).show()
+        }).addToComposite()
+
         binding.view = this
         binding.viewModel = viewModel
     }
@@ -44,7 +51,7 @@ class SettingsFragment : SimpleFragment() {
                 if (granted) {
                     (activity as SingleActivity).loadLastKnownLocation()
                 } else {
-                    //todo snackbar to say you need to grant permissions
+                    Snackbar.make(binding.root, R.string.enable_location_permission, Snackbar.LENGTH_SHORT).show()
                 }
             }).addToComposite()
         } else {

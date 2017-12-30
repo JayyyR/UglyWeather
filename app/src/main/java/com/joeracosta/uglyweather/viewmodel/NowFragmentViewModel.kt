@@ -88,7 +88,7 @@ class NowFragmentViewModel : SmartViewModel() {
 
     private fun fetchWeather() {
         if (SessionData.latitude == null || SessionData.longitude == null){
-            //todo prompt user to choose a location in the app
+            alertUserSubject.onNext(R.string.set_location_prompt)
             return
         }
         weatherAPI.getCurrentConditions(SessionData.latitude!!, SessionData.longitude!!)
@@ -99,7 +99,7 @@ class NowFragmentViewModel : SmartViewModel() {
                     notifyChange()
                 },
                 { error ->
-                    System.out.print("") //todo
+                    alertUserSubject.onNext(R.string.error_server)
                 }
         ).addToComposite()
     }

@@ -2,6 +2,7 @@ package com.joeracosta.uglyweather.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.databinding.Bindable
+import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
 import com.joeracosta.uglyweather.model.LaterWeather
 import com.joeracosta.uglyweather.network.weatherAPI
@@ -33,7 +34,7 @@ class LaterFragmentViewModel : SmartViewModel(){
 
     private fun fetchWeather() {
         if (SessionData.latitude == null || SessionData.longitude == null){
-            //todo prompt user to choose a location in the app
+            alertUserSubject.onNext(R.string.set_location_prompt)
             return
         }
         weatherAPI.getLaterConditions(SessionData.latitude!!, SessionData.longitude!!)
@@ -44,7 +45,7 @@ class LaterFragmentViewModel : SmartViewModel(){
                             notifyChange()
                         },
                         { error ->
-                            System.out.print("") //todo
+                            alertUserSubject.onNext(R.string.error_server)
                         }
                 ).addToComposite()
     }

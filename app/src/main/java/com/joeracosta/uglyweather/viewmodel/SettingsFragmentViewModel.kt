@@ -95,7 +95,6 @@ class SettingsFragmentViewModel : SmartViewModel() {
 
     fun saveZip() {
         if (zipCode.isEmpty()){
-            //todo toast enter zip
             return
         }
         latestLoadingStatus = LatestLoadingStatus.LOADING
@@ -103,7 +102,7 @@ class SettingsFragmentViewModel : SmartViewModel() {
                 .offMain()
                 .subscribe({ geoResponse ->
                     if (geoResponse.status != "OK") {
-                        //todo error setting zip
+                        alertUserSubject.onNext(R.string.valid_zip)
                         latestLoadingStatus = LatestLoadingStatus.FAILURE
                     } else {
                         latestLoadingStatus = LatestLoadingStatus.SUCCESS
@@ -120,7 +119,7 @@ class SettingsFragmentViewModel : SmartViewModel() {
 
                 }, {
                     latestLoadingStatus = LatestLoadingStatus.FAILURE
-                    //todo error setting zip
+                    alertUserSubject.onNext(R.string.error_server)
                 }).addToComposite()
     }
 }

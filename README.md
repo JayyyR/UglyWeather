@@ -7,6 +7,8 @@ DataBinding
 Kotlin   
 [SimpleFragments](https://github.com/JayyyR/SimpleFragments) - my navigation library
 
+This is published [here](https://play.google.com/store/apps/details?id=com.joeracosta.uglyweather)
+
 # License
  ```
  The MIT License (MIT)

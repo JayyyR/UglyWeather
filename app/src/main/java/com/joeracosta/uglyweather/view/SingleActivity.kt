@@ -31,12 +31,14 @@ class SingleActivity : FragmentStackActivity() {
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.stack_activity)
 
-        if (!hasFragments()) {
+        if (SessionData.needsToLoadData()){
             if (StoredData.getStoredShouldUseCurLocation()) {
                 loadCurrentLocation()
             } else{
                 SessionData.updateLocation(StoredData.getStoredLat(), StoredData.getStoredLon(), StoredData.getStoredLocationName())
             }
+        }
+        if (!hasFragments()) {
             addFragmentToStack(MapFragment(), R.id.main_view, null, null)
         }
     }
@@ -48,8 +50,7 @@ class SingleActivity : FragmentStackActivity() {
                         loadLastKnownLocation()
                     } else {
                         Data.useSavedLocation()
-                        val view = if (findViewById<View>(R.id.content_view) != null) findViewById<View>(R.id.content_view) else findViewById<View>(R.id.main_view)
-                        Snackbar.make(view, R.string.set_location_prompt, Snackbar.LENGTH_LONG).show()
+                        showSnackBar(R.string.set_location_prompt)
                     }
                 }).addToComposite()
     }
@@ -60,11 +61,15 @@ class SingleActivity : FragmentStackActivity() {
 
     @SuppressLint("MissingPermission")
     fun loadLastKnownLocation(){
-        ReactiveLocationProvider(this).lastKnownLocation //todo add case for location failure??
+        ReactiveLocationProvider(this).lastKnownLocation
                 .subscribe({ location ->
                     val geocoderLocation = Geocoder(this, Locale.getDefault()).getFromLocation(location.latitude, location.longitude, 1)?.get(0)
                     SessionData.updateLocation(location.latitude.toString(), location.longitude.toString(),
                             geocoderLocation?.locality + ", " + geocoderLocation?.adminArea)
+                }, {
+                    Data.useSavedLocation()
+                    showSnackBar(R.string.location_failed_prompt)
+                    Crashlytics.logException(it)
                 }).addToComposite()
     }
 
@@ -75,5 +80,10 @@ class SingleActivity : FragmentStackActivity() {
 
     private fun Disposable.addToComposite() {
         disposables.add(this)
+    }
+
+    private fun showSnackBar(stringResource : Int){
+        val view = if (findViewById<View>(R.id.content_view) != null) findViewById<View>(R.id.content_view) else findViewById<View>(R.id.main_view)
+        Snackbar.make(view, stringResource, Snackbar.LENGTH_LONG).show()
     }
 }

@@ -19,6 +19,7 @@
     <string name="set_zip">Set Zip:</string>
     <string name="set">Set</string>
     <string name="location_name_storage">stored_location_name</string>
+    <string name="location_failed_prompt">Failed to grab current location. Please go to settings to set a location.</string>
     <string name="set_location_prompt">Please go to settings to set a location.</string>
     <string name="enable_location_permission">Please enable location permissions to use current location</string>
     <string name="valid_zip">Please use a valid zip code</string>

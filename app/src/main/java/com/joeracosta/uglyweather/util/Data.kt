@@ -33,6 +33,10 @@ object SessionData {
             EventBus.getDefault().post(LocationUpdatedEvent())
         }
     }
+
+    fun needsToLoadData() : Boolean {
+        return longitude == null || latitude == null
+    }
 }
 
 object StoredData {

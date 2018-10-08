@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.joeracosta.library.activity.SimpleFragment
+import com.joeracosta.uglyweather.data.NowWeather
 import com.joeracosta.uglyweather.databinding.NowFragmentBinding
-import com.joeracosta.uglyweather.model.NowWeather
 import com.joeracosta.uglyweather.viewmodel.NowFragmentViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

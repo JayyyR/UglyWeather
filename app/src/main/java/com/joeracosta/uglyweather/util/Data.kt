@@ -3,6 +3,9 @@ package com.joeracosta.uglyweather.util
 import android.annotation.SuppressLint
 import com.joeracosta.uglyweather.App
 import com.joeracosta.uglyweather.R
+import com.joeracosta.uglyweather.data.DegreeType
+import com.joeracosta.uglyweather.data.codeToDegreeType
+import io.reactivex.subjects.PublishSubject
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -41,6 +44,8 @@ object SessionData {
 
 object StoredData {
 
+    val degreeTypeChanged = PublishSubject.create<Boolean>()
+
     fun getStoredLat(): String? {
         return App.sharedPreferences.getString(grabString(R.string.lat_storage), null)
     }
@@ -57,8 +62,8 @@ object StoredData {
         return App.sharedPreferences.getString(grabString(R.string.location_name_storage), "")
     }
 
-    fun getUseCelsius(): Boolean {
-        return App.sharedPreferences.getBoolean(grabString(R.string.use_celsius_storage), false)
+    fun getDegreeType(): DegreeType {
+        return codeToDegreeType(App.sharedPreferences.getInt(grabString(R.string.degree_type_storage), 0)) ?: DegreeType.FAHRENHEIT
     }
 
     @SuppressLint("ApplySharedPref")
@@ -87,8 +92,10 @@ object StoredData {
         App.sharedPreferences.edit().putString(grabString(R.string.zip_storage), zip).apply()
     }
 
-    fun storeUseCelsius(useCelsius : Boolean){
-        App.sharedPreferences.edit().putBoolean(grabString(R.string.use_celsius_storage), useCelsius).apply()
+    @SuppressLint("ApplySharedPref")
+    fun storeDegreeType(degreeType : DegreeType){
+        App.sharedPreferences.edit().putInt(grabString(R.string.degree_type_storage), degreeType.code).commit()
+        degreeTypeChanged.onNext(true)
     }
 
     fun storeSavedLocationName(locationName : String){

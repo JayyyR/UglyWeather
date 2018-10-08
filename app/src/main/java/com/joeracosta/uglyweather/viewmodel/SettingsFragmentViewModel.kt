@@ -33,7 +33,7 @@ class SettingsFragmentViewModel : SmartViewModel() {
         }
 
     @Bindable
-    var useCelsius = StoredData.getUseCelsius()
+    var useCelsius = StoredData.getDegreeType()
 
     @Bindable
     var zipCode = StoredData.getStoredZip()
@@ -88,9 +88,8 @@ class SettingsFragmentViewModel : SmartViewModel() {
     }
 
     var degreeSwitchListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        StoredData.storeUseCelsius(isChecked)
+        StoredData.storeDegreeType(isChecked)
         useCelsius = isChecked
-        EventBus.getDefault().post(UseCelsiusEvent(isChecked))
     }
 
 

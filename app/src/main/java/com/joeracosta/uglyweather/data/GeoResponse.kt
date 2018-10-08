@@ -1,4 +1,4 @@
-package com.joeracosta.uglyweather.model
+package com.joeracosta.uglyweather.data
 
 import com.google.gson.annotations.SerializedName
 

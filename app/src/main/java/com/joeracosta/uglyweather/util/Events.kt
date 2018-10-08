@@ -5,5 +5,3 @@ package com.joeracosta.uglyweather.util
  */
 
 class LocationUpdatedEvent()
-
-class UseCelsiusEvent(val useCelsius : Boolean)

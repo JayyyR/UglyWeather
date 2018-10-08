@@ -6,7 +6,7 @@ import com.crashlytics.android.Crashlytics
 import com.joeracosta.uglyweather.BR
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
-import com.joeracosta.uglyweather.model.NowWeather
+import com.joeracosta.uglyweather.data.NowWeather
 import com.joeracosta.uglyweather.network.weatherAPI
 import com.joeracosta.uglyweather.util.*
 import org.greenrobot.eventbus.EventBus
@@ -20,6 +20,13 @@ class NowFragmentViewModel : SmartViewModel() {
 
     init {
         EventBus.getDefault().register(this)
+
+        StoredData.degreeTypeChanged.subscribe({
+            notifyPropertyChanged(BR.temperature)
+            notifyPropertyChanged(BR.feelsLike)
+        }, {
+            Crashlytics.logException(it)
+        }).addToComposite()
     }
 
     private var nowWeather: MutableLiveData<NowWeather>? = null
@@ -42,10 +49,7 @@ class NowFragmentViewModel : SmartViewModel() {
 
     @Bindable
     fun getTemperature() : String {
-        return if (StoredData.getUseCelsius())
-            formatWeatherInCelsius(nowWeather?.value?.temperatureInFahrenheit)
-        else
-            formatWeatherInFahrenheit(nowWeather?.value?.temperatureInFahrenheit)
+        return WeatherFormatter.formatWeather(nowWeather?.value?.temperatureInFahrenheit)
     }
 
     @Bindable
@@ -55,10 +59,7 @@ class NowFragmentViewModel : SmartViewModel() {
 
     @Bindable
     fun getFeelsLike() : String {
-        return if (StoredData.getUseCelsius())
-            grabString(R.string.feels_like_label) + formatWeatherInCelsius(nowWeather?.value?.feelsLike)
-        else
-            grabString(R.string.feels_like_label) + formatWeatherInFahrenheit(nowWeather?.value?.feelsLike)
+        return grabString(R.string.feels_like_label) + WeatherFormatter.formatWeather(nowWeather?.value?.feelsLike)
     }
 
     @Bindable
@@ -113,11 +114,5 @@ class NowFragmentViewModel : SmartViewModel() {
     @Subscribe
     fun onLocationUpdated(event : LocationUpdatedEvent){
         fetchWeather()
-    }
-
-    @Subscribe
-    fun onCelsiusPreferenceSwitched(event : UseCelsiusEvent){
-        notifyPropertyChanged(BR.temperature)
-        notifyPropertyChanged(BR.feelsLike)
     }
 }

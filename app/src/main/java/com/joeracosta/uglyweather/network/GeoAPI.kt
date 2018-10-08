@@ -1,6 +1,6 @@
 package com.joeracosta.uglyweather.network
 
-import com.joeracosta.uglyweather.model.GeoResponse
+import com.joeracosta.uglyweather.data.GeoResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query

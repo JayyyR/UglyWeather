@@ -5,7 +5,7 @@ import android.databinding.Bindable
 import com.crashlytics.android.Crashlytics
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
-import com.joeracosta.uglyweather.model.LaterWeather
+import com.joeracosta.uglyweather.data.LaterWeather
 import com.joeracosta.uglyweather.network.weatherAPI
 import com.joeracosta.uglyweather.util.LocationUpdatedEvent
 import com.joeracosta.uglyweather.util.SessionData

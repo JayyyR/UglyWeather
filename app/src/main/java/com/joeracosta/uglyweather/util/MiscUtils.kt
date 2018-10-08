@@ -3,6 +3,7 @@ package com.joeracosta.uglyweather.util
 import android.support.v4.content.res.ResourcesCompat
 import com.joeracosta.uglyweather.App
 import com.joeracosta.uglyweather.R
+import com.joeracosta.uglyweather.data.DegreeType
 import java.util.*
 import java.util.regex.Pattern
 
@@ -11,31 +12,57 @@ import java.util.regex.Pattern
  * Created by Joe on 12/26/2017.
  */
 
+object WeatherFormatter {
+    fun formatWeather(weatherInFahrenheit: Float?): String {
+        val degreeType = StoredData.getDegreeType()
+        weatherInFahrenheit?.let {
+            return when (degreeType) {
+                DegreeType.FAHRENHEIT -> formatWeatherInFahrenheit(weatherInFahrenheit)
+                DegreeType.CELSIUS -> formatWeatherInCelsius(weatherInFahrenheit)
+                DegreeType.WEISHAUS -> formatWeatherInWeishaus(weatherInFahrenheit)
+            }
+        }
+        return ""
+    }
+
+
+    private fun formatWeatherInFahrenheit(weatherInFahrenheit: Float?): String {
+        weatherInFahrenheit?.let {
+            return Math.round(it).toString() + grabString(R.string.degree_symbol) + "F"
+        }
+        return ""
+    }
+
+    private fun formatWeatherInCelsius(weatherInFahrenheit: Float?) : String {
+        weatherInFahrenheit?.let {
+            return convertToCelsius(it).toString() + grabString(R.string.degree_symbol) + "C"
+        }
+        return ""
+    }
+
+    private fun convertToCelsius(tempInFahrenheit: Float): Int {
+        return Math.round((5F / 9F) * (tempInFahrenheit - 32))
+    }
+
+    private fun convertToWeishaus(tempInFahrenheit: Float) : Int {
+        //(°F - 32) / 0.666 = °W
+        return Math.round((tempInFahrenheit - 32) / 0.666F)
+    }
+
+    private fun formatWeatherInWeishaus(weatherInFahrenheit: Float?) : String {
+        weatherInFahrenheit?.let {
+            return convertToWeishaus(it).toString() + grabString(R.string.degree_symbol) + "W"
+        }
+        return ""
+    }
+
+}
 fun grabString(id: Int): String {
     return App.appResources.getString(id)
 }
 
 fun grabColor(id: Int): Int {
     return ResourcesCompat.getColor(App.appResources, id, null)
-}
-
-fun formatWeatherInFahrenheit(weatherInFahrenheit: Float?): String {
-    weatherInFahrenheit?.let {
-        return Math.round(it).toString() + grabString(R.string.degree_symbol) + "F"
-    }
-    return ""
-}
-
-fun formatWeatherInCelsius(weatherInFahrenheit: Float?) : String {
-    weatherInFahrenheit?.let {
-        return convertToCelsius(it).toString() + grabString(R.string.degree_symbol) + "C"
-    }
-
-    return ""
-}
-
-fun convertToCelsius(tempInFahrenheit: Float): Int {
-    return Math.round((5F / 9F) * (tempInFahrenheit - 32))
 }
 
 fun decimalToPercentage(decimal: Float): String {

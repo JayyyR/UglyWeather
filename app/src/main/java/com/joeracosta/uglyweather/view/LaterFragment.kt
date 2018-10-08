@@ -8,9 +8,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.crashlytics.android.Crashlytics
 import com.joeracosta.library.activity.SimpleFragment
+import com.joeracosta.uglyweather.data.LaterWeather
 import com.joeracosta.uglyweather.databinding.LaterFragmentBinding
-import com.joeracosta.uglyweather.model.LaterWeather
+import com.joeracosta.uglyweather.util.StoredData
 import com.joeracosta.uglyweather.viewmodel.LaterFragmentViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -20,11 +22,20 @@ import io.reactivex.disposables.Disposable
  */
 class LaterFragment : SimpleFragment() {
 
-
     private lateinit var viewModel : LaterFragmentViewModel
     private lateinit var binding: LaterFragmentBinding
     private var adapter : LaterWeatherAdapter? = null
     private var disposables = CompositeDisposable()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        StoredData.degreeTypeChanged.subscribe({
+            adapter?.notifyDataSetChanged()
+        }, {
+            Crashlytics.logException(it)
+        }).addToComposite()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = LaterFragmentBinding.inflate(inflater, container, false)
@@ -37,9 +48,9 @@ class LaterFragment : SimpleFragment() {
         binding.viewModel = viewModel
         binding.recyclerViewLaterWeather.layoutManager = LinearLayoutManager(context)
 
-        viewModel.alertUserSubject.subscribe({ stringRes ->
+        viewModel.alertUserSubject.subscribe { stringRes ->
             Snackbar.make(binding.root, stringRes, Snackbar.LENGTH_LONG).show()
-        }).addToComposite()
+        }.addToComposite()
 
         viewModel.observeWeather().observe(this, Observer<LaterWeather> { laterWeather ->
             laterWeather?.data?.let {
@@ -56,7 +67,6 @@ class LaterFragment : SimpleFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        adapter?.destroy()
         disposables.dispose()
     }
 

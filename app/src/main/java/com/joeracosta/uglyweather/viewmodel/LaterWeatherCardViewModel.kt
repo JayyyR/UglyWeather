@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import com.joeracosta.uglyweather.R
-import com.joeracosta.uglyweather.model.LaterWeatherDay
-import com.joeracosta.uglyweather.util.*
+import com.joeracosta.uglyweather.data.LaterWeatherDay
+import com.joeracosta.uglyweather.util.WeatherFormatter
+import com.joeracosta.uglyweather.util.grabIconDrawableResourceFromIcon
+import com.joeracosta.uglyweather.util.grabString
+import com.joeracosta.uglyweather.util.isToday
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,20 +52,12 @@ class LaterWeatherCardViewModel : BaseObservable() {
 
     @Bindable
     fun getHigh() : String {
-        return if (StoredData.getUseCelsius())
-            formatWeatherInCelsius(laterWeatherDay?.high)
-        else
-            formatWeatherInFahrenheit(laterWeatherDay?.high)
-
+        return WeatherFormatter.formatWeather(laterWeatherDay?.high)
     }
 
     @Bindable
     fun getLow() : String {
-        return if (StoredData.getUseCelsius())
-            formatWeatherInCelsius(laterWeatherDay?.low)
-        else
-            formatWeatherInFahrenheit(laterWeatherDay?.low)
-
+        return WeatherFormatter.formatWeather(laterWeatherDay?.low)
     }
 
 }

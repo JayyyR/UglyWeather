@@ -24,4 +24,12 @@
     <string name="enable_location_permission">Please enable location permissions to use current location</string>
     <string name="valid_zip">Please use a valid zip code</string>
     <string name="error_server">Error reaching the internet</string>
+
+    <string-array name="degree_type_labels">
+        <item>Fahrenheit</item>
+        <item>Celsius</item>
+        <item>Weishaus</item>
+    </string-array>
+
+
 </resources>

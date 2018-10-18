@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
 import com.joeracosta.library.activity.SimpleFragment
 import com.joeracosta.uglyweather.R
+import com.joeracosta.uglyweather.data.degreeTypeToCode
 import com.joeracosta.uglyweather.databinding.SettingsFragmentBinding
 import com.joeracosta.uglyweather.util.Data
 import com.joeracosta.uglyweather.util.StoredData
@@ -33,22 +34,26 @@ class SettingsFragment : SimpleFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SettingsFragmentViewModel::class.java)
 
-        viewModel.alertUserSubject.subscribe({ stringRes ->
+        viewModel.alertUserSubject.subscribe { stringRes ->
             Snackbar.make(binding.root, stringRes, Snackbar.LENGTH_LONG).show()
-        }).addToComposite()
+        }.addToComposite()
 
         binding.view = this
         binding.viewModel = viewModel
+
+        //initial degreetype
+        val selectedDegreeType = degreeTypeToCode(StoredData.getDegreeType())
+        selectedDegreeType?.let(binding.degreeSpinner::setSelection)
     }
 
     //listener in the view because we need the activity reference to check for permissions and update location
     var curLocCheckListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         if (isChecked) {
-            (activity as SingleActivity).checkLocationPermission().subscribe({ granted ->
+            (activity as SingleActivity).checkLocationPermission().subscribe { granted ->
                 viewModel.useCurLocation = granted
                 StoredData.storeShouldUseCurLocation(granted)
                 if (granted) {
@@ -56,7 +61,7 @@ class SettingsFragment : SimpleFragment() {
                 } else {
                     Snackbar.make(binding.root, R.string.enable_location_permission, Snackbar.LENGTH_LONG).show()
                 }
-            }).addToComposite()
+            }.addToComposite()
         } else {
             viewModel.useCurLocation = false
             Data.useSavedLocation()
@@ -65,8 +70,8 @@ class SettingsFragment : SimpleFragment() {
 
     fun setZipClicked(){
         activity?.currentFocus?.let{
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(it.windowToken, 0)
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(it.windowToken, 0)
         }
         viewModel.saveZip()
     }

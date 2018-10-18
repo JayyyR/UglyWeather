@@ -42,7 +42,7 @@ class LaterFragment : SimpleFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(LaterFragmentViewModel::class.java)
         binding.viewModel = viewModel

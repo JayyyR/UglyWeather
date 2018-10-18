@@ -44,7 +44,7 @@ object SessionData {
 
 object StoredData {
 
-    val degreeTypeChanged = PublishSubject.create<Boolean>()
+    val degreeTypeChanged: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
 
     fun getStoredLat(): String? {
         return App.sharedPreferences.getString(grabString(R.string.lat_storage), null)

@@ -28,15 +28,15 @@ class NowFragment : SimpleFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(NowFragmentViewModel::class.java)
         binding.viewModel = viewModel
 
-        viewModel.alertUserSubject.subscribe({ stringRes ->
+        viewModel.alertUserSubject.subscribe { stringRes ->
             binding.swipeContainer.isRefreshing = false
             Snackbar.make(binding.root, stringRes, Snackbar.LENGTH_LONG).show()
-        }).addToComposite()
+        }.addToComposite()
 
         viewModel.observeWeather().observe(this, Observer<NowWeather> {
             binding.swipeContainer.isRefreshing = false

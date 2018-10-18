@@ -23,7 +23,7 @@ class MapFragment : FragmentMapFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (!hasFragments()) {
             showFragmentInMap(NowFragment(), R.id.content_view, R.id.menu_now.toString())

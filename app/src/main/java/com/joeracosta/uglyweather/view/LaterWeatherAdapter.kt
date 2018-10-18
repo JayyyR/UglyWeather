@@ -17,8 +17,8 @@ class LaterWeatherAdapter(var laterWeatherData: List<LaterWeatherDay>) : Recycle
         return LaterWeatherCardViewHolder(LaterWeatherCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    override fun onBindViewHolder(holder: LaterWeatherCardViewHolder?, position: Int) {
-        holder?.bind(laterWeatherData[position])
+    override fun onBindViewHolder(holder: LaterWeatherCardViewHolder, position: Int) {
+        holder.bind(laterWeatherData[position])
     }
 
     override fun getItemCount(): Int {

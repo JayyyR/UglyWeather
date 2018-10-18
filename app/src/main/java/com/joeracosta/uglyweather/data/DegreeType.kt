@@ -14,3 +14,21 @@ fun codeToDegreeType(code: Int) : DegreeType? {
         else -> null
     }
 }
+
+fun degreeTypeToCode(degreeType: DegreeType): Int? {
+    return when (degreeType) {
+        DegreeType.FAHRENHEIT -> 0
+        DegreeType.CELSIUS -> 1
+        DegreeType.WEISHAUS -> 2
+        else -> null
+    }
+}
+
+fun degreeNameToDegreeType(name: String): DegreeType? {
+    return when (name.toLowerCase()) {
+        "fahrenheit" -> DegreeType.FAHRENHEIT
+        "celsius" -> DegreeType.CELSIUS
+        "weishaus" -> DegreeType.WEISHAUS
+        else -> null
+    }
+}

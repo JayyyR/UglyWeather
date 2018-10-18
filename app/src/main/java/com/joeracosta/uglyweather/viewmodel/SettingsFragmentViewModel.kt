@@ -2,14 +2,13 @@ package com.joeracosta.uglyweather.viewmodel
 
 import android.databinding.Bindable
 import android.view.View
-import android.widget.CompoundButton
 import com.crashlytics.android.Crashlytics
 import com.joeracosta.uglyweather.BR
 import com.joeracosta.uglyweather.R
 import com.joeracosta.uglyweather.SmartViewModel
+import com.joeracosta.uglyweather.data.DegreeType
 import com.joeracosta.uglyweather.network.geoAPI
 import com.joeracosta.uglyweather.util.*
-import org.greenrobot.eventbus.EventBus
 
 /**
  * Created by Joe on 12/28/2017.
@@ -31,9 +30,6 @@ class SettingsFragmentViewModel : SmartViewModel() {
             field = value
             notifyChange()
         }
-
-    @Bindable
-    var useCelsius = StoredData.getDegreeType()
 
     @Bindable
     var zipCode = StoredData.getStoredZip()
@@ -87,11 +83,9 @@ class SettingsFragmentViewModel : SmartViewModel() {
         return !useCurLocation
     }
 
-    var degreeSwitchListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        StoredData.storeDegreeType(isChecked)
-        useCelsius = isChecked
+    val degreeChangeListener: (degreeType: DegreeType) -> Unit = { degreeType ->
+        StoredData.storeDegreeType(degreeType)
     }
-
 
     fun saveZip() {
         if (zipCode.isEmpty()){
